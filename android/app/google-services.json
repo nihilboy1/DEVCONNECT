@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "862085756725",
+    "project_id": "devconnect-15587",
+    "storage_bucket": "devconnect-15587.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:862085756725:android:8953bd0f7c08fa31b63e7c",
+        "android_client_info": {
+          "package_name": "com.devconnect"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "862085756725-nlol011usb7kajvggsrur4674akdo40j.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAPCqzvsEefRHbT4Yo1IzxU_qhgPfMbZTg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "862085756725-nlol011usb7kajvggsrur4674akdo40j.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
