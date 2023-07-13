@@ -4,7 +4,7 @@ import Toast, {
   SuccessToast,
   ToastProps,
 } from 'react-native-toast-message';
-import {colors, fonts} from './src/theme/theme';
+import {colors, fonts} from '../theme/theme';
 
 export const toastConfig = {
   info: (props: ToastProps) => (
@@ -16,6 +16,7 @@ export const toastConfig = {
         borderColor: colors.info,
       }}
       contentContainerStyle={{paddingHorizontal: 15}}
+      text1NumberOfLines={2}
       text1Style={{
         fontFamily: fonts.medium,
         fontSize: 18,
@@ -30,8 +31,10 @@ export const toastConfig = {
         backgroundColor: colors.text,
         borderLeftWidth: 10,
         borderColor: colors.success,
+        minHeight: 50,
       }}
       contentContainerStyle={{paddingHorizontal: 15}}
+      text1NumberOfLines={2}
       text1Style={{
         fontFamily: fonts.medium,
         fontSize: 18,
@@ -45,9 +48,10 @@ export const toastConfig = {
       style={{
         backgroundColor: colors.text,
         borderLeftWidth: 10,
-        borderColor: colors.success,
+        borderColor: colors.danger,
       }}
       contentContainerStyle={{paddingHorizontal: 15}}
+      text1NumberOfLines={2}
       text1Style={{
         fontFamily: fonts.medium,
         fontSize: 18,

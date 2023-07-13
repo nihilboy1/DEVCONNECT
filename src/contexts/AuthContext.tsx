@@ -1,12 +1,9 @@
 import {ReactNode, createContext, useEffect, useState} from 'react';
-import {FirebaseAuth} from '../connection/Firebase/auth';
+import {AsyncStorageUser} from '../connection/AsyncStorage/user';
+import {FirebaseUserAuth} from '../connection/Firebase/auth';
 import {FirebaseUsersDatabase} from '../connection/Firebase/database';
-import {
-  localStorageDeleteUser,
-  localStorageGetUser,
-  localStorageSetUser,
-} from '../storage/userStorage';
 import {userDTO} from '../types/userDTO';
+import {showToast} from '../utils/toastConfig';
 
 type ContextDataProps = {
   loggedInUser: boolean;
@@ -36,9 +33,8 @@ export function AuthContextProvider({children}: ContextProviderProps) {
   async function signUp(email: string, password: string, name: string) {
     try {
       setIsAuthLoading(true);
-      const response = await FirebaseAuth.CreateUser(email, password);
-      if (response?.user.uid !== undefined) {
-        const uid = response.user.uid;
+      const uid = await FirebaseUserAuth.Create(email, password);
+      if (uid !== undefined) {
         const user = {
           uid,
           name,
@@ -49,6 +45,7 @@ export function AuthContextProvider({children}: ContextProviderProps) {
         };
         await FirebaseUsersDatabase.Set(user, uid);
         await signIn(email, password);
+        showToast('success', 'bottom', 'Sucessfully registered');
       }
     } catch (error) {
       throw error;
@@ -60,7 +57,7 @@ export function AuthContextProvider({children}: ContextProviderProps) {
   async function signIn(email: string, password: string) {
     try {
       setIsAuthLoading(true);
-      const uid = await FirebaseAuth.ConnectUser(email, password);
+      const uid = await FirebaseUserAuth.Connect(email, password);
       if (uid !== undefined) {
         const response = await FirebaseUsersDatabase.Get(uid);
         if (response !== undefined) {
@@ -72,7 +69,7 @@ export function AuthContextProvider({children}: ContextProviderProps) {
             timeStamp: response.timeStamp,
             avatarUrl: response.avatarUrl,
           };
-          await localStorageSetUser(user);
+          await AsyncStorageUser.Set(user);
           setUser(user);
           setLoggedInUser(true);
         }
@@ -83,10 +80,10 @@ export function AuthContextProvider({children}: ContextProviderProps) {
     }
   }
 
-  async function handleLocalStorageGetUser() {
+  async function asyncStorageGetUser() {
     try {
       setIsLocalUserFetched(false);
-      const user = await localStorageGetUser();
+      const user = await AsyncStorageUser.Get();
       if (user.uid !== undefined) {
         setUser(user);
         setLoggedInUser(true);
@@ -99,14 +96,14 @@ export function AuthContextProvider({children}: ContextProviderProps) {
 
   async function signOut() {
     setUser(null);
-    await localStorageDeleteUser();
-    await FirebaseAuth.DisconnectUser();
+    await AsyncStorageUser.Delete();
+    await FirebaseUserAuth.Disconnect();
     setIsAuthLoading(false);
     setLoggedInUser(false);
   }
 
   useEffect(() => {
-    handleLocalStorageGetUser();
+    asyncStorageGetUser();
   }, []);
 
   return (

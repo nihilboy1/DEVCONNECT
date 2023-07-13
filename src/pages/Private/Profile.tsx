@@ -19,8 +19,8 @@ import {
 } from '../../connection/Firebase/database';
 import {FirebaseUsersAvatarStorage} from '../../connection/Firebase/storage';
 
+import {localStorageSetUser} from '../../connection/AsyncStorage/user';
 import {useAuthContext} from '../../hooks/useAuthContext';
-import {localStorageSetUser} from '../../storage/userStorage';
 import {colors} from '../../theme/theme';
 import {userDTO} from '../../types/userDTO';
 

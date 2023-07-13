@@ -14,10 +14,10 @@ import {
 import * as Animatable from 'react-native-animatable';
 import mainLogoDark from '../../assets/mainLogoDark.png';
 
-import {showToast} from '../../../toastConfig';
 import {useAuthContext} from '../../hooks/useAuthContext';
 import {StackAuthRoutesProps} from '../../routes/auth.routes';
 import {colors, fonts} from '../../theme/theme';
+import {showToast} from '../../utils/toastConfig';
 
 export function SignIn() {
   const {navigate} = useNavigation<StackAuthRoutesProps>();

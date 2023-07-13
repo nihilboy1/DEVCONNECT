@@ -91,16 +91,15 @@ export const FirebasePostsDatabase = {
     [getPostDTO[], boolean, FirebaseFirestoreTypes.DocumentData]
   > => {
     try {
-      const postsResponse = await firestore()
+      const response = await firestore()
         .collection(postsCollection)
         .orderBy('timeStamp')
         .limit(3)
         .get();
 
-      const theresNoMorePosts = !!postsResponse.empty;
-      const lastPostFromOlder =
-        postsResponse.docs[postsResponse.docs.length - 1];
-      const olderPosts: getPostDTO[] = postsResponse.docs.map(doc => {
+      const theresNoMorePosts = !!response.empty;
+      const lastPostFromOlder = response.docs[response.docs.length - 1];
+      const olderPosts: getPostDTO[] = response.docs.map(doc => {
         return {
           id: doc.id,
           authorName: doc.data().authorName,
