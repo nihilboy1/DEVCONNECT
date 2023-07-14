@@ -10,7 +10,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import devPostLogoDark from '../../assets/devPostLogoDark.png';
+import mainLogoDark from '../../assets/mainLogoDark.png';
 
 import * as Animatable from 'react-native-animatable';
 import Feather from 'react-native-vector-icons/Feather';
@@ -45,7 +45,7 @@ export function SearchPosts() {
         <Pressable style={S.buttonBack} onPress={() => goBack()}>
           <Feather name="chevron-left" size={32} color={colors.text} />
         </Pressable>
-        <Image source={devPostLogoDark} />
+        <Image source={mainLogoDark} />
 
         <Feather name="chevron-left" size={32} color={colors.background} />
       </Animatable.View>

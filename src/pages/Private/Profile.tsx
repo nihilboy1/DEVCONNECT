@@ -1,8 +1,8 @@
 import {useFocusEffect} from '@react-navigation/native';
 import {useCallback, useEffect, useState} from 'react';
 import {
-  ActivityIndicator,
   Image,
+  Keyboard,
   ScrollView,
   StyleSheet,
   Text,
@@ -13,13 +13,13 @@ import {
 import {launchImageLibrary} from 'react-native-image-picker';
 import Feather from 'react-native-vector-icons/Feather';
 import defaultAvatarImg from '../../assets/avatar.png';
+import {Loading} from '../../components/Loading';
+import {AsyncStorageUser} from '../../connection/AsyncStorage/userStorage';
 import {
   FirebasePostsDatabase,
   FirebaseUsersDatabase,
 } from '../../connection/Firebase/database';
 import {FirebaseUsersAvatarStorage} from '../../connection/Firebase/storage';
-
-import {localStorageSetUser} from '../../connection/AsyncStorage/user';
 import {useAuthContext} from '../../hooks/useAuthContext';
 import {colors} from '../../theme/theme';
 import {userDTO} from '../../types/userDTO';
@@ -29,6 +29,7 @@ export function Profile() {
   if (!user?.uid) {
     return;
   }
+  const [isKeyboardVisible, setKeyboardVisible] = useState(false);
   const [updatingUserName, setUpdatingUserName] = useState(false);
   const [updatingUserAvatarUrl, setUpdatingUserAvatarUrl] = useState(false);
   const [oldName, setOldName] = useState(user.name);
@@ -56,7 +57,7 @@ export function Profile() {
           avatarUrl: response.avatarUrl,
           timeStamp: response.timeStamp,
         } as userDTO;
-        await localStorageSetUser(user);
+        await AsyncStorageUser.Set(user);
         setUser(user);
         setCurrentName(user.name);
         setOldName(user.name);
@@ -100,10 +101,10 @@ export function Profile() {
               avatarUrl: response.avatarUrl,
               timeStamp: response.timeStamp,
             } as userDTO;
-            await localStorageSetUser(user);
+            await AsyncStorageUser.Set(user);
             setUser(user);
             setAvatarUrl(user.avatarUrl);
-            await FirebaseUsersDatabase.Update(
+            await FirebasePostsDatabase.UpdateAllFromAUser(
               {avatarUrl: user.avatarUrl},
               user.uid,
             );
@@ -139,7 +140,7 @@ export function Profile() {
           avatarUrl: response.avatarUrl,
           timeStamp: response.timeStamp,
         } as userDTO;
-        await localStorageSetUser(user);
+        await AsyncStorageUser.Set(user);
         setUser(user);
         setAvatarUrl(user.avatarUrl);
       }
@@ -160,53 +161,77 @@ export function Profile() {
   useFocusEffect(
     useCallback(() => {
       setCurrentName(user.name);
-    }, []),
+    }, [user]),
   );
+
+  const handleKeyboardHide = () => {
+    setKeyboardVisible(false);
+  };
+
+  const handleKeyboardShow = () => {
+    setKeyboardVisible(true);
+  };
+
+  useEffect(() => {
+    const keyboardDidShowListener = Keyboard.addListener(
+      'keyboardDidShow',
+      handleKeyboardShow,
+    );
+    const keyboardDidHideListener = Keyboard.addListener(
+      'keyboardDidHide',
+      handleKeyboardHide,
+    );
+
+    return () => {
+      keyboardDidShowListener.remove();
+      keyboardDidHideListener.remove();
+    };
+  }, []);
 
   return (
     <ScrollView contentContainerStyle={S.container}>
       <Text style={S.userEmailText}>{user.email}</Text>
-      <View
-        style={[
-          S.uploadAvatarView,
-          !avatarUrl ? {} : {borderTopRightRadius: 5},
-        ]}>
-        {avatarUrl ? (
-          <>
+      {isKeyboardVisible ? null : (
+        <View
+          style={[
+            S.uploadAvatarView,
+            !avatarUrl ? {} : {borderTopRightRadius: 5},
+          ]}>
+          {avatarUrl ? (
+            <>
+              <TouchableOpacity
+                onPress={updateUserAvatarUrl}
+                style={S.uploadAvatarIconBox1}>
+                <Feather name="edit" size={28} color={colors.text} />
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={S.uploadAvatarIconBox2}
+                onPress={removeUserAvatarUrl}>
+                <Feather name="x" size={28} color={colors.text} />
+              </TouchableOpacity>
+            </>
+          ) : (
             <TouchableOpacity
               onPress={updateUserAvatarUrl}
               style={S.uploadAvatarIconBox1}>
-              <Feather name="edit" size={28} color={colors.text} />
+              <Feather name="file-plus" size={28} color={colors.text} />
             </TouchableOpacity>
-            <TouchableOpacity
-              style={S.uploadAvatarIconBox2}
-              onPress={removeUserAvatarUrl}>
-              <Feather name="x" size={28} color={colors.text} />
-            </TouchableOpacity>
-          </>
-        ) : (
-          <TouchableOpacity
-            onPress={updateUserAvatarUrl}
-            style={S.uploadAvatarIconBox1}>
-            <Feather name="file-plus" size={28} color={colors.text} />
-          </TouchableOpacity>
-        )}
-        {updatingUserAvatarUrl ? (
-          <ActivityIndicator
-            style={{padding: 50}}
-            color={colors.text}
-            size={50}
-          />
-        ) : (
-          <Image
-            source={!avatarUrl ? defaultAvatarImg : {uri: avatarUrl}}
-            style={[
-              S.avatarImage,
-              !avatarUrl ? {} : {borderColor: colors.primary},
-            ]}
-          />
-        )}
-      </View>
+          )}
+          {updatingUserAvatarUrl ? (
+            <View style={{padding: 50}}>
+              <Loading spinColor={colors.text} size={50} />
+            </View>
+          ) : (
+            <Image
+              source={!avatarUrl ? defaultAvatarImg : {uri: avatarUrl}}
+              style={[
+                S.avatarImage,
+                !avatarUrl ? {} : {borderColor: colors.primary},
+              ]}
+            />
+          )}
+        </View>
+      )}
       <View
         style={{
           flexDirection: 'row',
@@ -216,6 +241,7 @@ export function Profile() {
           borderRadius: 5,
           borderColor: colors.primary,
           padding: 5,
+          marginTop: 35,
         }}>
         <TextInput
           style={S.userNameText}
@@ -225,32 +251,27 @@ export function Profile() {
             setCurrentName(value);
           }}
         />
-        <View
+        <TouchableOpacity
+          disabled={disabledButton}
+          onPress={updateUserName}
           style={{
             backgroundColor: colors.primary,
             padding: 4,
             borderRadius: 10,
+            opacity: disabledButton ? 0.2 : 1,
           }}>
-          <Feather name="edit" size={28} color={colors.text} />
-        </View>
+          {updatingUserName ? (
+            <Loading spinColor={colors.text} size={28} />
+          ) : (
+            <Feather name="save" size={28} color={colors.text} />
+          )}
+        </TouchableOpacity>
       </View>
-
-      <TouchableOpacity
-        disabled={disabledButton}
-        style={[
-          S.updateProfileButton,
-          disabledButton ? {opacity: 0.3} : {opacity: 1},
-        ]}
-        onPress={updateUserName}>
-        {updatingUserName ? (
-          <ActivityIndicator color={colors.text} size={30} />
-        ) : (
-          <Text style={S.buttonText}>Save Name</Text>
-        )}
-      </TouchableOpacity>
-      <TouchableOpacity style={S.signOutButton} onPress={signOut}>
-        <Text style={S.buttonText}>Sign Out</Text>
-      </TouchableOpacity>
+      {isKeyboardVisible ? null : (
+        <TouchableOpacity style={S.signOutButton} onPress={signOut}>
+          <Text style={S.buttonText}>Sign Out</Text>
+        </TouchableOpacity>
+      )}
     </ScrollView>
   );
 }
@@ -260,7 +281,7 @@ const S = StyleSheet.create({
     backgroundColor: colors.danger,
     borderRadius: 10,
     padding: 12,
-    marginTop: 25,
+    marginTop: 100,
   },
 
   uploadAvatarIconBox1: {
@@ -291,7 +312,6 @@ const S = StyleSheet.create({
     padding: 25,
     position: 'relative',
     marginTop: 25,
-    marginBottom: 20,
   },
 
   updateProfileButton: {

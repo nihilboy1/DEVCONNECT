@@ -5,7 +5,7 @@ import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import * as Animatable from 'react-native-animatable';
 import Toast from 'react-native-toast-message';
 import Feather from 'react-native-vector-icons/Feather';
-import devPostLogoDark from '../../assets/devPostLogoDark.png';
+import postsLogoDark from '../../assets/postsLogoDark.png';
 import {NewPostModal} from '../../components/NewPostModal';
 import {OpenModalWidget} from '../../components/OpenModalWidget';
 import {PostsList} from '../../components/PostsList';
@@ -135,7 +135,7 @@ export function Posts() {
   return (
     <View style={S.container}>
       <Animatable.View animation="fadeInDown" style={S.header}>
-        <Image source={devPostLogoDark} />
+        <Image source={postsLogoDark} />
         <TouchableOpacity
           onPress={() => {
             navigate('searchPosts');

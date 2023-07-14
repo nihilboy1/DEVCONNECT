@@ -1,6 +1,5 @@
 import {useEffect, useState} from 'react';
 import {
-  ActivityIndicator,
   Modal,
   Pressable,
   StyleSheet,
@@ -11,6 +10,7 @@ import {
 } from 'react-native';
 import Feather from 'react-native-vector-icons/Feather';
 import {colors} from '../theme/theme';
+import {Loading} from './Loading';
 
 type NewPostModalProps = {
   modalVisible: boolean;
@@ -88,7 +88,7 @@ export function NewPostModal({
           {contentIsEmpty ? "The post content can't be empty" : ''}
         </Text>
         {posting ? (
-          <ActivityIndicator />
+          <Loading spinColor={colors.text} size={28} />
         ) : (
           <Pressable style={S.sendPostButton} onPress={handleAddPost}>
             <Text style={S.textStyle}>Post it up</Text>
@@ -117,12 +117,11 @@ const S = StyleSheet.create({
   },
   input: {
     marginTop: 12,
-    color: 'black',
+    color: colors.text,
     fontSize: 20,
     borderWidth: 1,
     borderRadius: 5,
     backgroundColor: colors.info,
-
     height: 130,
     width: '100%',
   },

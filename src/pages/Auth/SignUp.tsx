@@ -1,19 +1,11 @@
 import {useNavigation} from '@react-navigation/native';
 import {useEffect, useState} from 'react';
-import {
-  ActivityIndicator,
-  Image,
-  Keyboard,
-  ScrollView,
-  StyleSheet,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  View,
-} from 'react-native';
+import {Keyboard, ScrollView, StyleSheet} from 'react-native';
 import * as Animatable from 'react-native-animatable';
-import mainLogoDark from '../../assets/mainLogoDark.png';
+import {Button} from '../../components/Button';
 
+import {AuthInput} from '../../components/AuthInput';
+import {Header} from '../../components/Header';
 import {useAuthContext} from '../../hooks/useAuthContext';
 import {StackAuthRoutesProps} from '../../routes/auth.routes';
 import {colors, fonts} from '../../theme/theme';
@@ -63,66 +55,40 @@ export function SignUp() {
     <ScrollView
       contentContainerStyle={[S.container, {gap: isKeyboardVisible ? 20 : 50}]}>
       {!isKeyboardVisible && (
-        <Animatable.View animation="fadeInDown" style={S.header}>
-          <Image source={mainLogoDark} />
-          <TouchableOpacity
-            onPress={() => {
-              goBack();
-            }}>
-            <Text style={S.moveToLogin}>Sign In</Text>
-          </TouchableOpacity>
-        </Animatable.View>
+        <Header moveButton={goBack} moveButtonText="Login" />
       )}
       <Animatable.Text animation="fadeInLeft" style={S.pageTitle}>
         Sign Up
       </Animatable.Text>
-      <Animatable.View animation="fadeInLeft" style={S.inputBox}>
-        <Text style={S.inputLabelText}>Email</Text>
-        <TextInput
-          value={email}
-          keyboardType="email-address"
-          onChangeText={value => {
-            setEmail(value);
-          }}
-          style={S.textInput}
-        />
-      </Animatable.View>
-      <Animatable.View animation="fadeInLeft" style={S.inputBox}>
-        <Text style={S.inputLabelText}>Name</Text>
-        <TextInput
-          value={name}
-          onChangeText={value => {
-            setName(value);
-          }}
-          style={S.textInput}
-        />
-      </Animatable.View>
-      <Animatable.View animation="fadeInLeft" style={S.inputBox}>
-        <Text style={S.inputLabelText}>Password</Text>
-        <TextInput
-          secureTextEntry
-          value={password}
-          onChangeText={value => {
-            setPassword(value);
-          }}
-          style={S.textInput}
-        />
-      </Animatable.View>
+      <AuthInput
+        label="Email"
+        value={email}
+        keyboardType="email-address"
+        onChangeText={value => {
+          setEmail(value);
+        }}
+      />
+      <AuthInput
+        label="Name"
+        value={name}
+        onChangeText={value => {
+          setName(value);
+        }}
+      />
+      <AuthInput
+        label="Password"
+        secureTextEntry
+        value={password}
+        onChangeText={value => {
+          setPassword(value);
+        }}
+      />
 
-      <View>
-        {isAuthLoading ? (
-          <TouchableOpacity
-            style={S.signUpButton}
-            onPress={handleSignUp}
-            disabled>
-            <ActivityIndicator color={colors.background} size={38} />
-          </TouchableOpacity>
-        ) : (
-          <TouchableOpacity style={S.signUpButton} onPress={handleSignUp}>
-            <Text style={S.signUpButtonText}>Sign Up</Text>
-          </TouchableOpacity>
-        )}
-      </View>
+      <Button
+        action={handleSignUp}
+        isLoading={isAuthLoading}
+        content="Sign Up"
+      />
     </ScrollView>
   );
 }

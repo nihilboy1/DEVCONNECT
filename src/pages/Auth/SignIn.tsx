@@ -1,35 +1,30 @@
 import {useNavigation} from '@react-navigation/native';
 import {useEffect, useState} from 'react';
-import {
-  ActivityIndicator,
-  Image,
-  Keyboard,
-  ScrollView,
-  StyleSheet,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  View,
-} from 'react-native';
+import {Keyboard, ScrollView, StyleSheet} from 'react-native';
 import * as Animatable from 'react-native-animatable';
-import mainLogoDark from '../../assets/mainLogoDark.png';
-
+import {AuthInput} from '../../components/AuthInput';
+import {Button} from '../../components/Button';
+import {Header} from '../../components/Header';
 import {useAuthContext} from '../../hooks/useAuthContext';
 import {StackAuthRoutesProps} from '../../routes/auth.routes';
 import {colors, fonts} from '../../theme/theme';
 import {showToast} from '../../utils/toastConfig';
 
 export function SignIn() {
-  const {navigate} = useNavigation<StackAuthRoutesProps>();
   const [isKeyboardVisible, setKeyboardVisible] = useState(false);
+  const {navigate} = useNavigation<StackAuthRoutesProps>();
 
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const {signIn, isAuthLoading} = useAuthContext();
 
+  function moveToSignUp() {
+    navigate('signUp');
+  }
+
   async function handleSignIn() {
     if (email === '' || password === '') {
-      showToast('error', 'bottom', 'There are empty fields');
+      showToast('error', 'top', 'There are empty fields');
       return;
     }
     await signIn(email, password);
@@ -63,57 +58,33 @@ export function SignIn() {
     <ScrollView
       contentContainerStyle={[S.container, {gap: isKeyboardVisible ? 20 : 50}]}>
       {!isKeyboardVisible && (
-        <Animatable.View animation="fadeInDown" style={S.header}>
-          <Image source={mainLogoDark} />
-          <TouchableOpacity
-            onPress={() => {
-              navigate('signUp');
-            }}>
-            <Text style={S.moveToSignUp}>Create Account</Text>
-          </TouchableOpacity>
-        </Animatable.View>
+        <Header moveButton={moveToSignUp} moveButtonText="Create account" />
       )}
       <Animatable.Text animation="fadeInLeft" style={S.pageTitle}>
         Sign In
       </Animatable.Text>
-      <Animatable.View animation="fadeInLeft" style={S.inputBox}>
-        <Text style={S.inputLabelText}>Email</Text>
-        <TextInput
-          value={email}
-          keyboardType="email-address"
-          onChangeText={value => {
-            setEmail(value);
-          }}
-          style={S.textInput}
-        />
-      </Animatable.View>
+      <AuthInput
+        label="Email"
+        onChangeText={(value: string) => {
+          setEmail(value);
+        }}
+        value={email}
+        keyboardType="email-address"
+      />
+      <AuthInput
+        label="Password"
+        secureTextEntry
+        value={password}
+        onChangeText={(value: string) => {
+          setPassword(value);
+        }}
+      />
 
-      <Animatable.View animation="fadeInLeft" style={S.inputBox}>
-        <Text style={S.inputLabelText}>Password</Text>
-        <TextInput
-          secureTextEntry
-          value={password}
-          onChangeText={value => {
-            setPassword(value);
-          }}
-          style={S.textInput}
-        />
-      </Animatable.View>
-
-      <View>
-        {isAuthLoading ? (
-          <TouchableOpacity
-            style={S.signUpButton}
-            onPress={handleSignIn}
-            disabled>
-            <ActivityIndicator color={colors.background} size={38} />
-          </TouchableOpacity>
-        ) : (
-          <TouchableOpacity style={S.signUpButton} onPress={handleSignIn}>
-            <Text style={S.signUpButtonText}>Sign In</Text>
-          </TouchableOpacity>
-        )}
-      </View>
+      <Button
+        action={handleSignIn}
+        isLoading={isAuthLoading}
+        content="Sign In"
+      />
     </ScrollView>
   );
 }
@@ -153,29 +124,11 @@ const S = StyleSheet.create({
     paddingBottom: 5,
   },
 
-  signUpButton: {
-    borderRadius: 15,
-    height: 60,
-    padding: 10,
-    width: 320,
-    paddingHorizontal: 20,
-    borderWidth: 1,
-    backgroundColor: colors.text,
-    borderColor: colors.background,
-  },
-
   moveToSignUp: {
     color: colors.text,
     fontSize: 20,
     textAlign: 'center',
     fontFamily: fonts.mono,
-  },
-
-  signUpButtonText: {
-    color: colors.background,
-    fontFamily: fonts.regular,
-    fontSize: 24,
-    textAlign: 'center',
   },
 
   header: {

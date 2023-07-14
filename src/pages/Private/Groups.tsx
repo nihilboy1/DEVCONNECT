@@ -1,18 +1,8 @@
 import {useFocusEffect} from '@react-navigation/native';
 import {useCallback, useState} from 'react';
-import {
-  Alert,
-  FlatList,
-  Image,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from 'react-native';
+import {Alert, FlatList, Image, StyleSheet, View} from 'react-native';
 import * as Animatable from 'react-native-animatable';
-import Toast from 'react-native-toast-message';
-import Feather from 'react-native-vector-icons/Feather';
-import devGroupLogoDark from '../../assets/devGroupLogoDark.png';
+import groupsLogoDark from '../../assets/groupsLogoDark.png';
 import {GroupCard} from '../../components/GroupCard';
 import {NewGroupModal} from '../../components/NewGroupModal';
 import {OpenModalWidget} from '../../components/OpenModalWidget';
@@ -69,16 +59,7 @@ export function Groups() {
     }
   }
 
-  async function handleFirebaseGetAllGroupsFromAllUsers() {
-    if (theresNoMoreGroups) {
-      setLoadingGroups(false);
-      Toast.show({
-        type: 'info',
-        text1: 'All groups was loaded',
-        position: 'bottom',
-      });
-      return;
-    }
+  async function getAllGroups() {
     if (loadingGroups) {
       return;
     }
@@ -96,10 +77,7 @@ export function Groups() {
     }
   }
 
-  async function handleFireBaseDeleteAGroup(
-    groupOwnerId: string,
-    groupId: string,
-  ) {
+  async function deleteAGroup(groupOwnerId: string, groupId: string) {
     if (groupOwnerId !== user?.uid) {
       return;
     }
@@ -129,20 +107,20 @@ export function Groups() {
 
   useFocusEffect(
     useCallback(() => {
-      handleFirebaseGetAllGroupsFromAllUsers();
+      getAllGroups();
+    }, []),
+  );
+
+  useFocusEffect(
+    useCallback(() => {
+      getAllGroups();
     }, [theresNoMoreGroups]),
   );
 
   return (
     <View style={S.container}>
       <Animatable.View animation="fadeInDown" style={S.header}>
-        <Image source={devGroupLogoDark} />
-        <TouchableOpacity
-          onPress={() => {}}
-          style={{flexDirection: 'row', gap: 8, alignItems: 'center'}}>
-          <Text style={S.moveToText}>Search</Text>
-          <Feather name="search" color={colors.text} size={22} />
-        </TouchableOpacity>
+        <Image source={groupsLogoDark} />
       </Animatable.View>
       <FlatList
         showsVerticalScrollIndicator={false}
@@ -153,7 +131,7 @@ export function Groups() {
             <GroupCard
               groupName={item.groupName}
               lastMessageContent={item.lastMessage.content}
-              handleFireBaseDeleteAGroup={handleFireBaseDeleteAGroup}
+              handleFireBaseDeleteAGroup={deleteAGroup}
               groupOwnerId={item.groupOwnerId}
               groupId={item.id}
             />
@@ -187,7 +165,7 @@ const S = StyleSheet.create({
     padding: 10,
     marginBottom: 10,
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    justifyContent: 'center',
     alignItems: 'center',
   },
 

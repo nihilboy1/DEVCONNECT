@@ -1,4 +1,5 @@
-import {ActivityIndicator, View} from 'react-native';
+import {View} from 'react-native';
+import {Loading} from '../components/Loading';
 import {useAuthContext} from '../hooks/useAuthContext';
 import {colors} from '../theme/theme';
 import {AuthRoutes} from './auth.routes';
@@ -14,7 +15,7 @@ export function Routes() {
           justifyContent: 'center',
           alignItems: 'center',
         }}>
-        <ActivityIndicator size={45} color={colors.text} />
+        <Loading size={45} spinColor={colors.text} />
       </View>
     );
   }

@@ -1,7 +1,6 @@
 import {useNavigation, useRoute} from '@react-navigation/native';
 import {useEffect, useState} from 'react';
 import {
-  ActivityIndicator,
   FlatList,
   KeyboardAvoidingView,
   Platform,
@@ -14,6 +13,7 @@ import {
 import * as Animatable from 'react-native-animatable';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import Feather from 'react-native-vector-icons/Feather';
+import {Loading} from '../../components/Loading';
 import {MessageCard} from '../../components/MessageCard';
 import {FirebaseMessagesDatabase} from '../../connection/Firebase/database';
 import {useAuthContext} from '../../hooks/useAuthContext';
@@ -49,7 +49,10 @@ export function GroupChat() {
     try {
       setSendingMessage(true);
       const now = Date.now();
-      await FirebaseMessagesDatabase.UpdateLast(groupId, message, now);
+      await FirebaseMessagesDatabase.UpdateLast(groupId, message, now, {
+        name: user.name,
+        uid: user.uid,
+      });
       await FirebaseMessagesDatabase.Add(
         groupId,
         user.name,
@@ -146,10 +149,9 @@ export function GroupChat() {
               borderRadius: 99,
             }}>
             {sendingMessage ? (
-              <ActivityIndicator
-                style={{paddingBottom: 3, paddingLeft: 3}}
-                color={colors.text}
-              />
+              <View style={{paddingBottom: 3, paddingLeft: 3}}>
+                <Loading spinColor={colors.text} size={20} />
+              </View>
             ) : (
               <Feather name="send" color={colors.text} size={22} />
             )}

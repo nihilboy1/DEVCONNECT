@@ -1,6 +1,5 @@
 import {useEffect, useState} from 'react';
 import {
-  ActivityIndicator,
   Modal,
   Pressable,
   StyleSheet,
@@ -13,6 +12,7 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 import {FirebaseGroupsDatabase} from '../connection/Firebase/database';
 import {useAuthContext} from '../hooks/useAuthContext';
 import {colors} from '../theme/theme';
+import {Loading} from './Loading';
 
 type NewGroupModalProps = {
   creatingNewGroup: boolean;
@@ -103,7 +103,7 @@ export function NewGroupModal({
             : ''}
         </Text>
         {creatingNewGroup ? (
-          <ActivityIndicator />
+          <Loading spinColor={colors.text} size={28} />
         ) : (
           <Pressable style={S.createGroupButton} onPress={handleAddNewGroup}>
             <Text style={S.textStyle}>Create</Text>

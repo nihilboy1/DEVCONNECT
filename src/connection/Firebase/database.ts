@@ -294,10 +294,16 @@ export const FirebaseMessagesDatabase = {
       throw error;
     }
   },
-  UpdateLast: async (groupId: string, content: string, timeStamp: number) => {
+  UpdateLast: async (
+    groupId: string,
+    content: string,
+    timeStamp: number,
+    author: {name: string; uid: string},
+  ) => {
     try {
       await firestore().collection(groupsCollection).doc(groupId).update({
         lastMessage: {
+          author,
           content,
           timeStamp,
         },

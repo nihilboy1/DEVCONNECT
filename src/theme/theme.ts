@@ -22,6 +22,8 @@ export const colors = {
   overlay: 'rgba(7, 12, 32, 0.5)',
 };
 
+export type colorsProps = keyof typeof colors;
+
 export const fonts = {
   mono: 'CutiveMono-Regular',
   regular: 'Rubik-Regular',
