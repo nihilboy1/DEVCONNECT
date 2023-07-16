@@ -1,6 +1,6 @@
 import {Text, View} from 'react-native';
 import {useAuthContext} from '../hooks/useAuthContext';
-import {colors, fonts} from '../theme/theme';
+import {useThemeContext} from '../hooks/useThemeContext';
 
 type MessageCardProps = {
   author: {
@@ -11,6 +11,8 @@ type MessageCardProps = {
   content: string;
 };
 export function MessageCard({author, content, timeStamp}: MessageCardProps) {
+  const {colors, fonts, theme} = useThemeContext();
+
   const {user} = useAuthContext();
 
   if (!user?.uid) {
@@ -28,7 +30,7 @@ export function MessageCard({author, content, timeStamp}: MessageCardProps) {
         {
           backgroundColor:
             author.uid == 'system'
-              ? colors.overlay
+              ? colors.background
               : author.uid === user.uid
               ? colors.primary
               : colors.info,

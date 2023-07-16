@@ -1,7 +1,9 @@
 import {Image, Text, TouchableOpacity} from 'react-native';
 import * as Animatable from 'react-native-animatable';
 import mainLogoDark from '../assets/mainLogoDark.png';
-import {colors, fonts} from '../theme/theme';
+import mainLogoLight from '../assets/mainLogoLight.png';
+
+import {useThemeContext} from '../hooks/useThemeContext';
 
 type HeaderProps = {
   moveButton: () => void;
@@ -9,6 +11,8 @@ type HeaderProps = {
 };
 
 export function Header({moveButton, moveButtonText}: HeaderProps) {
+  const {colors, fonts, theme} = useThemeContext();
+
   return (
     <Animatable.View
       animation="fadeInDown"
@@ -19,14 +23,14 @@ export function Header({moveButton, moveButtonText}: HeaderProps) {
         justifyContent: 'space-between',
         alignItems: 'center',
       }}>
-      <Image source={mainLogoDark} />
+      <Image source={theme === 'dark' ? mainLogoDark : mainLogoLight} />
       <TouchableOpacity onPress={moveButton}>
         <Text
           style={{
             color: colors.text,
             fontSize: 20,
             textAlign: 'center',
-            fontFamily: fonts.mono,
+            fontFamily: fonts.medium,
           }}>
           {moveButtonText}
         </Text>

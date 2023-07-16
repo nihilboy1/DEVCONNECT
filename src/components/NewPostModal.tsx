@@ -8,7 +8,7 @@ import {
   View,
 } from 'react-native';
 import Feather from 'react-native-vector-icons/Feather';
-import {colors} from '../theme/theme';
+import {useThemeContext} from '../hooks/useThemeContext';
 import {Loading} from './Loading';
 
 type NewPostModalProps = {
@@ -30,6 +30,8 @@ export function NewPostModal({
   postPlaceholder,
   posting,
 }: NewPostModalProps) {
+  const {colors, theme} = useThemeContext();
+
   const [contentIsEmpty, setContentIsEmpty] = useState(false);
   function handleAddPost() {
     if (postContent === '') {
@@ -124,7 +126,8 @@ export function NewPostModal({
             fontSize: 20,
             borderWidth: 1,
             borderRadius: 5,
-            backgroundColor: colors.info,
+            paddingLeft: 10,
+            backgroundColor: theme === 'dark' ? colors.info : colors.background,
             height: 130,
             width: '100%',
           }}

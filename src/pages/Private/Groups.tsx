@@ -3,6 +3,8 @@ import {useCallback, useState} from 'react';
 import {Alert, FlatList, Image, View} from 'react-native';
 import * as Animatable from 'react-native-animatable';
 import groupsLogoDark from '../../assets/groupsLogoDark.png';
+import groupsLogoLight from '../../assets/groupsLogoLight.png';
+
 import {GroupCard} from '../../components/GroupCard';
 import {NewGroupModal} from '../../components/NewGroupModal';
 import {OpenModalWidget} from '../../components/OpenModalWidget';
@@ -11,12 +13,14 @@ import {
   FirebaseMessagesDatabase,
 } from '../../connection/Firebase/database';
 import {useAuthContext} from '../../hooks/useAuthContext';
-import {colors} from '../../theme/theme';
+import {useThemeContext} from '../../hooks/useThemeContext';
 import {getGroupDTO} from '../../types/groupDTO';
 import {addMessageDTO} from '../../types/messageDTO';
 
 export function Groups() {
   const {user} = useAuthContext();
+  const {colors, theme} = useThemeContext();
+
   const [creatingNewGroup, setCreatingNewGroup] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
   const [groupName, setGroupName] = useState('');
@@ -136,7 +140,7 @@ export function Groups() {
           justifyContent: 'center',
           alignItems: 'center',
         }}>
-        <Image source={groupsLogoDark} />
+        <Image source={theme === 'dark' ? groupsLogoDark : groupsLogoLight} />
       </Animatable.View>
       <FlatList
         showsVerticalScrollIndicator={false}

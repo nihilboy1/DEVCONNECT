@@ -14,11 +14,13 @@ import mainLogoDark from '../../assets/mainLogoDark.png';
 import * as Animatable from 'react-native-animatable';
 import Feather from 'react-native-vector-icons/Feather';
 import {FirebaseUsersDatabase} from '../../connection/Firebase/database';
+import {useThemeContext} from '../../hooks/useThemeContext';
 import {PostsStackPrivateRoutesProps} from '../../routes/private.stack.posts.routes';
-import {colors} from '../../theme/theme';
 import {userDTO} from '../../types/userDTO';
 
 export function SearchPosts() {
+  const {colors} = useThemeContext();
+
   const {navigate, goBack} = useNavigation<PostsStackPrivateRoutesProps>();
   const [userName, setUserName] = useState('');
   const [searchedUsers, setSearchedUsers] = useState<userDTO[]>([]);

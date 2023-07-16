@@ -4,6 +4,7 @@ import {
   Image,
   Keyboard,
   ScrollView,
+  Switch,
   Text,
   TextInput,
   TouchableOpacity,
@@ -20,11 +21,13 @@ import {
 } from '../../connection/Firebase/database';
 import {FirebaseUsersAvatarStorage} from '../../connection/Firebase/storage';
 import {useAuthContext} from '../../hooks/useAuthContext';
-import {colors} from '../../theme/theme';
+import {useThemeContext} from '../../hooks/useThemeContext';
 import {userDTO} from '../../types/userDTO';
 
 export function Profile() {
   const {signOut, user, setUser} = useAuthContext();
+  const {colors, fonts, theme, setTheme} = useThemeContext();
+
   if (!user?.uid) {
     return;
   }
@@ -35,7 +38,13 @@ export function Profile() {
   const [currentName, setCurrentName] = useState<string>(user.name);
   const [avatarUrl, setAvatarUrl] = useState<string | null>(user.avatarUrl);
   const [disabledButton, setDisabledButton] = useState<boolean>(true);
-
+  function handleChangeTheme() {
+    if (theme === 'dark') {
+      setTheme('light');
+    } else if (theme === 'light') {
+      setTheme('dark');
+    }
+  }
   async function updateUserName() {
     try {
       setUpdatingUserName(true);
@@ -194,59 +203,33 @@ export function Profile() {
         backgroundColor: colors.background,
         alignItems: 'center',
       }}>
-      <Text
+      <View
         style={{
-          fontSize: 22,
-          color: colors.text,
-          fontStyle: 'italic',
-          marginTop: 40,
+          marginTop: 50,
+          alignItems: 'center',
+          justifyContent: 'center',
         }}>
-        {user.email}
-      </Text>
-      {isKeyboardVisible ? null : (
-        <View
-          style={[
-            {
-              padding: 25,
-              position: 'relative',
-              marginTop: 25,
-            },
-            !avatarUrl ? {} : {borderTopRightRadius: 5},
-          ]}>
-          {avatarUrl ? (
-            <>
-              <TouchableOpacity
-                onPress={updateUserAvatarUrl}
-                style={{
-                  position: 'absolute',
-                  left: 20,
-                  bottom: 25,
-                  backgroundColor: colors.primary,
-                  padding: 4,
-                  borderRadius: 10,
-                  marginLeft: 5,
-                  marginTop: 5,
-                  zIndex: 99,
-                }}>
-                <Feather name="edit" size={28} color={colors.text} />
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={{
-                  position: 'absolute',
-                  right: 20,
-                  top: 25,
-                  backgroundColor: colors.danger,
-                  padding: 4,
-                  borderRadius: 10,
-                  marginLeft: 5,
-                  marginTop: 5,
-                  zIndex: 99,
-                }}
-                onPress={removeUserAvatarUrl}>
-                <Feather name="x" size={28} color={colors.text} />
-              </TouchableOpacity>
-            </>
-          ) : (
+        <Text style={{color: colors.text, fontFamily: fonts.bold}}>
+          {theme === 'dark' ? 'DARKMODE' : 'LIGHTMODE'}
+        </Text>
+        <Switch
+          trackColor={{false: colors.primary, true: colors.primary}}
+          thumbColor={colors.text}
+          ios_backgroundColor="#3e3e3e"
+          onValueChange={handleChangeTheme}
+          value={theme === 'dark' ? false : true}
+        />
+      </View>
+      <View
+        style={[
+          {
+            padding: 25,
+            position: 'relative',
+          },
+          !avatarUrl ? {} : {borderTopRightRadius: 5},
+        ]}>
+        {avatarUrl ? (
+          <>
             <TouchableOpacity
               onPress={updateUserAvatarUrl}
               style={{
@@ -257,32 +240,62 @@ export function Profile() {
                 padding: 4,
                 borderRadius: 10,
                 marginLeft: 5,
-                marginTop: 5,
                 zIndex: 99,
               }}>
-              <Feather name="file-plus" size={28} color={colors.text} />
+              <Feather name="edit" size={28} color={colors.text} />
             </TouchableOpacity>
-          )}
-          {updatingUserAvatarUrl ? (
-            <View style={{padding: 50}}>
-              <Loading spinColor={colors.text} size={50} />
-            </View>
-          ) : (
-            <Image
-              source={!avatarUrl ? defaultAvatarImg : {uri: avatarUrl}}
-              style={[
-                {
-                  borderRadius: 100,
-                  width: 150,
-                  height: 150,
-                  borderWidth: 3,
-                },
-                !avatarUrl ? {} : {borderColor: colors.primary},
-              ]}
-            />
-          )}
-        </View>
-      )}
+            <TouchableOpacity
+              style={{
+                position: 'absolute',
+                right: 20,
+                top: 25,
+                backgroundColor: colors.danger,
+                padding: 4,
+                borderRadius: 10,
+                marginLeft: 5,
+                marginTop: 5,
+                zIndex: 99,
+              }}
+              onPress={removeUserAvatarUrl}>
+              <Feather name="x" size={28} color={colors.text} />
+            </TouchableOpacity>
+          </>
+        ) : (
+          <TouchableOpacity
+            onPress={updateUserAvatarUrl}
+            style={{
+              position: 'absolute',
+              left: 20,
+              bottom: 25,
+              backgroundColor: colors.primary,
+              padding: 4,
+              borderRadius: 10,
+              marginLeft: 5,
+              marginTop: 5,
+              zIndex: 99,
+            }}>
+            <Feather name="file-plus" size={28} color={colors.text} />
+          </TouchableOpacity>
+        )}
+        {updatingUserAvatarUrl ? (
+          <View style={{padding: 50}}>
+            <Loading spinColor={colors.text} size={50} />
+          </View>
+        ) : (
+          <Image
+            source={!avatarUrl ? defaultAvatarImg : {uri: avatarUrl}}
+            style={[
+              {
+                borderRadius: 100,
+                width: 150,
+                height: 150,
+                borderWidth: 3,
+              },
+              !avatarUrl ? {} : {borderColor: colors.info},
+            ]}
+          />
+        )}
+      </View>
       <View
         style={{
           flexDirection: 'row',
@@ -290,15 +303,18 @@ export function Profile() {
           gap: 10,
           borderWidth: 1,
           borderRadius: 5,
-          borderColor: colors.primary,
+          borderColor: colors.info,
           padding: 5,
           marginTop: 35,
         }}>
         <TextInput
           style={{
-            fontSize: 30,
+            fontSize: 25,
             color: colors.text,
-            backgroundColor: colors.info,
+            fontFamily: fonts.regular,
+            borderWidth: 1,
+            borderColor: colors.info,
+            backgroundColor: theme === 'dark' ? colors.info : colors.background,
             height: 50,
             borderRadius: 5,
             padding: 5,
@@ -310,6 +326,7 @@ export function Profile() {
             setCurrentName(value);
           }}
         />
+
         <TouchableOpacity
           disabled={disabledButton}
           onPress={updateUserName}
@@ -326,13 +343,22 @@ export function Profile() {
           )}
         </TouchableOpacity>
       </View>
+      <Text
+        style={{
+          fontSize: 22,
+          color: colors.text,
+          fontStyle: 'italic',
+          marginTop: isKeyboardVisible ? 5 : 15,
+        }}>
+        {user.email}
+      </Text>
       {isKeyboardVisible ? null : (
         <TouchableOpacity
           style={{
             backgroundColor: colors.danger,
             borderRadius: 10,
             padding: 12,
-            marginTop: 100,
+            marginTop: 50,
           }}
           onPress={signOut}>
           <Text

@@ -16,7 +16,7 @@ import {Loading} from '../../components/Loading';
 import {MessageCard} from '../../components/MessageCard';
 import {FirebaseMessagesDatabase} from '../../connection/Firebase/database';
 import {useAuthContext} from '../../hooks/useAuthContext';
-import {colors, fonts} from '../../theme/theme';
+import {useThemeContext} from '../../hooks/useThemeContext';
 import {getMessageDTO} from '../../types/messageDTO';
 
 type GroupChatRouteProps = {
@@ -26,6 +26,8 @@ type GroupChatRouteProps = {
 
 export function GroupChat() {
   const {user} = useAuthContext();
+  const {colors, fonts, theme} = useThemeContext();
+
   const {params} = useRoute();
   const {groupName, groupId} = params as GroupChatRouteProps;
   const {goBack} = useNavigation();
@@ -121,8 +123,9 @@ export function GroupChat() {
         <View
           style={{
             padding: 10,
-            backgroundColor: colors.text,
-            borderRadius: 5,
+            backgroundColor: theme === 'dark' ? colors.text : colors.primary,
+            borderTopLeftRadius: 5,
+            borderTopRightRadius: 5,
             flexDirection: 'row',
             alignItems: 'center',
             justifyContent: 'space-between',
@@ -153,7 +156,8 @@ export function GroupChat() {
               padding: 15,
               paddingTop: 18,
               paddingRight: 18,
-              backgroundColor: colors.primary,
+              backgroundColor:
+                theme === 'dark' ? colors.primary : colors.background,
               borderRadius: 99,
             }}>
             {sendingMessage ? (

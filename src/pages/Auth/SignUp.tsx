@@ -7,12 +7,12 @@ import {Button} from '../../components/Button';
 import {AuthInput} from '../../components/AuthInput';
 import {Header} from '../../components/Header';
 import {useAuthContext} from '../../hooks/useAuthContext';
+import {useThemeContext} from '../../hooks/useThemeContext';
 import {StackAuthRoutesProps} from '../../routes/auth.routes';
-import {colors, fonts} from '../../theme/theme';
-import {showToast} from '../../utils/toastConfig';
 
 export function SignUp() {
   const {goBack} = useNavigation<StackAuthRoutesProps>();
+  const {colors, fonts} = useThemeContext();
   const [isKeyboardVisible, setKeyboardVisible] = useState(false);
   const [email, setEmail] = useState<string>('');
   const [name, setName] = useState<string>('');
@@ -29,7 +29,6 @@ export function SignUp() {
 
   async function handleSignUp() {
     if (email === '' || password === '' || name === '') {
-      showToast('info', 'top', 'There are empty fields');
       return;
     }
     await signUp(email, password, name);

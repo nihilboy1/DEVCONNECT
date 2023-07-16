@@ -1,12 +1,14 @@
 import {Text, TextInput, TextInputProps} from 'react-native';
 import * as Animatable from 'react-native-animatable';
-import {colors, fonts} from '../theme/theme';
+import {useThemeContext} from '../hooks/useThemeContext';
 
 type AuthPageInputProps = TextInputProps & {
   label: string;
 };
 
 export function AuthInput({label, ...inputProps}: AuthPageInputProps) {
+  const {colors, fonts} = useThemeContext();
+
   return (
     <Animatable.View
       animation="fadeInLeft"

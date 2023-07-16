@@ -1,8 +1,8 @@
 import {useNavigation} from '@react-navigation/native';
 import {Text, TouchableOpacity} from 'react-native';
 import {useAuthContext} from '../hooks/useAuthContext';
+import {useThemeContext} from '../hooks/useThemeContext';
 import {GroupsStackPrivateRoutesProps} from '../routes/private.stack.groups.routes';
-import {colors, fonts} from '../theme/theme';
 
 type GroupCardProps = {
   groupName: string;
@@ -20,6 +20,8 @@ export function GroupCard({
   handleFireBaseDeleteAGroup,
 }: GroupCardProps) {
   const {user} = useAuthContext();
+  const {colors, fonts} = useThemeContext();
+
   const {navigate} = useNavigation<GroupsStackPrivateRoutesProps>();
   return (
     <TouchableOpacity
@@ -30,12 +32,13 @@ export function GroupCard({
         navigate('groupChat', {groupName, groupId});
       }}
       style={{
-        borderWidth: 1,
-        backgroundColor:
-          user?.uid === groupOwnerId ? colors.info : colors.primary,
+        backgroundColor: colors.primary,
         padding: 18,
         borderRadius: 5,
         marginBottom: 10,
+        borderRightWidth: 10,
+        borderRightColor:
+          user?.uid !== groupOwnerId ? colors.primary : colors.info,
       }}>
       <Text
         style={{

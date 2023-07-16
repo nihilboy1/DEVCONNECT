@@ -10,7 +10,7 @@ import {
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import {FirebaseGroupsDatabase} from '../connection/Firebase/database';
 import {useAuthContext} from '../hooks/useAuthContext';
-import {colors} from '../theme/theme';
+import {useThemeContext} from '../hooks/useThemeContext';
 import {Loading} from './Loading';
 
 type NewGroupModalProps = {
@@ -31,6 +31,7 @@ export function NewGroupModal({
   setGroupName,
 }: NewGroupModalProps) {
   const {user} = useAuthContext();
+  const {colors, theme} = useThemeContext();
 
   const [contentIsEmpty, setContentIsEmpty] = useState(false);
   const [
@@ -134,10 +135,11 @@ export function NewGroupModal({
           style={{
             marginTop: 12,
             color: colors.text,
+            paddingLeft: 10,
+            backgroundColor: theme === 'dark' ? colors.info : colors.background,
             fontSize: 20,
             borderWidth: 1,
             borderRadius: 5,
-            backgroundColor: colors.info,
             height: 50,
             width: '100%',
           }}

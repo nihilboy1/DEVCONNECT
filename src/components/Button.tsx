@@ -1,5 +1,5 @@
 import {Text, TouchableOpacity} from 'react-native';
-import {colors, fonts} from '../theme/theme';
+import {useThemeContext} from '../hooks/useThemeContext';
 import {Loading} from './Loading';
 
 type ButtonProps = {
@@ -9,6 +9,8 @@ type ButtonProps = {
 };
 
 export function Button({isLoading, action, content}: ButtonProps) {
+  const {colors, fonts} = useThemeContext();
+
   return (
     <TouchableOpacity
       style={{

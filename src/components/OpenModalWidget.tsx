@@ -1,6 +1,6 @@
 import {TouchableOpacity} from 'react-native';
 import Entypo from 'react-native-vector-icons/Entypo';
-import {colors} from '../theme/theme';
+import {useThemeContext} from '../hooks/useThemeContext';
 
 type OpenModalWidgetProps = {
   setModalVisible: (value: boolean) => void;
@@ -11,6 +11,8 @@ export function OpenModalWidget({
   setModalVisible,
   iconName,
 }: OpenModalWidgetProps) {
+  const {colors} = useThemeContext();
+
   return (
     <TouchableOpacity
       onPress={() => {

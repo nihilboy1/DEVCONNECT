@@ -6,14 +6,14 @@ import {AuthInput} from '../../components/AuthInput';
 import {Button} from '../../components/Button';
 import {Header} from '../../components/Header';
 import {useAuthContext} from '../../hooks/useAuthContext';
+import {useThemeContext} from '../../hooks/useThemeContext';
 import {StackAuthRoutesProps} from '../../routes/auth.routes';
-import {colors, fonts} from '../../theme/theme';
 import {showToast} from '../../utils/toastConfig';
 
 export function SignIn() {
   const [isKeyboardVisible, setKeyboardVisible] = useState(false);
   const {navigate} = useNavigation<StackAuthRoutesProps>();
-
+  const {colors, fonts} = useThemeContext();
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const {signIn, isAuthLoading} = useAuthContext();

@@ -6,17 +6,20 @@ import * as Animatable from 'react-native-animatable';
 import Toast from 'react-native-toast-message';
 import Feather from 'react-native-vector-icons/Feather';
 import postsLogoDark from '../../assets/postsLogoDark.png';
+import postsLogoLight from '../../assets/postsLogoLight.png';
+
 import {NewPostModal} from '../../components/NewPostModal';
 import {OpenModalWidget} from '../../components/OpenModalWidget';
 import {PostsList} from '../../components/PostsList';
 import {FirebasePostsDatabase} from '../../connection/Firebase/database';
 import {useAuthContext} from '../../hooks/useAuthContext';
+import {useThemeContext} from '../../hooks/useThemeContext';
 import {PostsStackPrivateRoutesProps} from '../../routes/private.stack.posts.routes';
-import {colors, fonts} from '../../theme/theme';
 import {getPostDTO} from '../../types/postDTO';
 
 export function Posts() {
   const {user} = useAuthContext();
+  const {colors, fonts, theme} = useThemeContext();
   const {navigate} = useNavigation<PostsStackPrivateRoutesProps>();
 
   const [posts, setPosts] = useState<getPostDTO[]>([]);
@@ -151,7 +154,7 @@ export function Posts() {
           justifyContent: 'space-between',
           alignItems: 'center',
         }}>
-        <Image source={postsLogoDark} />
+        <Image source={theme === 'dark' ? postsLogoDark : postsLogoLight} />
         <TouchableOpacity
           onPress={() => {
             navigate('searchPosts');
@@ -161,7 +164,7 @@ export function Posts() {
             style={{
               color: colors.text,
               fontSize: 20,
-              fontFamily: fonts.mono,
+              fontFamily: theme === 'dark' ? fonts.mono : fonts.medium,
             }}>
             Search
           </Text>

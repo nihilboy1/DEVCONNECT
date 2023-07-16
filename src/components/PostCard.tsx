@@ -7,8 +7,8 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 import defaultAvatarImg from '../assets/avatar.png';
 import {FirebasePostsDatabase} from '../connection/Firebase/database';
 import {useAuthContext} from '../hooks/useAuthContext';
+import {useThemeContext} from '../hooks/useThemeContext';
 import {PostsStackPrivateRoutesProps} from '../routes/private.stack.posts.routes';
-import {colors, fonts} from '../theme/theme';
 import {getPostDTO} from '../types/postDTO';
 
 type PostProps = {
@@ -16,6 +16,7 @@ type PostProps = {
 };
 
 export function PostCard({postData}: PostProps) {
+  const {colors, fonts} = useThemeContext();
   const {user} = useAuthContext();
   const {navigate} = useNavigation<PostsStackPrivateRoutesProps>();
   const [usersWhoLiked, setUsersWhoLiked] = useState<string[]>(
@@ -64,7 +65,7 @@ export function PostCard({postData}: PostProps) {
         marginBottom: 15,
         borderRadius: 5,
         padding: 15,
-        backgroundColor: colors.info,
+        backgroundColor: colors.primary,
       }}
       animation="bounceInLeft">
       <TouchableOpacity
@@ -75,15 +76,19 @@ export function PostCard({postData}: PostProps) {
           flexDirection: 'row',
           alignItems: 'center',
           gap: 10,
-          backgroundColor: colors.primary,
           borderRadius: 50,
-          padding: 5,
         }}>
         <Image
           source={
             postData.avatarUrl ? {uri: postData.avatarUrl} : defaultAvatarImg
           }
-          style={{width: 45, height: 45, borderRadius: 99}}
+          style={{
+            width: 45,
+            height: 45,
+            borderRadius: 99,
+            borderWidth: 1,
+            borderColor: colors.text,
+          }}
         />
         <Text
           style={{
@@ -99,6 +104,7 @@ export function PostCard({postData}: PostProps) {
           fontSize: 18,
           height: 100,
           fontFamily: fonts.regular,
+
           color: colors.text,
           marginTop: 10,
           marginBottom: 10,

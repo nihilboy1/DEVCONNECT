@@ -10,12 +10,14 @@ import Feather from 'react-native-vector-icons/Feather';
 import {PostsList} from '../../components/PostsList';
 import {FirebasePostsDatabase} from '../../connection/Firebase/database';
 import {useAuthContext} from '../../hooks/useAuthContext';
+import {useThemeContext} from '../../hooks/useThemeContext';
 import {userPostsRouteProps} from '../../routes/private.stack.posts.routes';
-import {colors} from '../../theme/theme';
 import {getPostDTO} from '../../types/postDTO';
 
 export function UserPosts() {
   const {user} = useAuthContext();
+  const {colors} = useThemeContext();
+
   const {goBack} = useNavigation();
   const [userPosts, setUserPosts] = useState<getPostDTO[]>([]);
   const [isLoadingPosts, setIsLoadingPosts] = useState(true);

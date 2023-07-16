@@ -4,41 +4,43 @@ import Toast, {
   SuccessToast,
   ToastProps,
 } from 'react-native-toast-message';
-import {colors, fonts} from '../theme/theme';
 
 export const toastConfig = {
-  info: (props: ToastProps) => (
-    <InfoToast
-      {...props}
-      style={{
-        backgroundColor: colors.text,
-        borderLeftWidth: 10,
-        borderColor: colors.info,
-      }}
-      contentContainerStyle={{paddingHorizontal: 15}}
-      text1NumberOfLines={2}
-      text1Style={{
-        fontFamily: fonts.medium,
-        fontSize: 18,
-        color: colors.black,
-      }}
-    />
-  ),
+  info: (props: ToastProps) => {
+    return (
+      <InfoToast
+        {...props}
+        style={{
+          backgroundColor: '#F2F2F2',
+          borderLeftWidth: 10,
+          borderWidth: 1,
+          borderColor: '#6C6D73',
+        }}
+        contentContainerStyle={{paddingHorizontal: 15}}
+        text1NumberOfLines={2}
+        text1Style={{
+          fontFamily: 'Rubik-Medium',
+          fontSize: 18,
+          color: '#161A26',
+        }}
+      />
+    );
+  },
   success: (props: ToastProps) => (
     <SuccessToast
       {...props}
       style={{
-        backgroundColor: colors.text,
+        backgroundColor: '#F2F2F2',
         borderLeftWidth: 10,
-        borderColor: colors.success,
+        borderColor: '#dcf8c5',
         minHeight: 50,
       }}
       contentContainerStyle={{paddingHorizontal: 15}}
       text1NumberOfLines={2}
       text1Style={{
-        fontFamily: fonts.medium,
+        fontFamily: 'Rubik-Medium',
         fontSize: 18,
-        color: colors.black,
+        color: '#161A26',
       }}
     />
   ),
@@ -46,16 +48,16 @@ export const toastConfig = {
     <ErrorToast
       {...props}
       style={{
-        backgroundColor: colors.text,
+        backgroundColor: '#F2F2F2',
         borderLeftWidth: 10,
-        borderColor: colors.danger,
+        borderColor: '#ee6b6e',
       }}
       contentContainerStyle={{paddingHorizontal: 15}}
       text1NumberOfLines={2}
       text1Style={{
-        fontFamily: fonts.medium,
+        fontFamily: 'Rubik-Medium',
         fontSize: 18,
-        color: colors.black,
+        color: '#161A26',
       }}
     />
   ),
