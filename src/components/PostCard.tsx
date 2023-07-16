@@ -1,7 +1,7 @@
 import {useNavigation} from '@react-navigation/native';
 import {formatDistance} from 'date-fns';
 import {useState} from 'react';
-import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {Image, Text, TouchableOpacity, View} from 'react-native';
 import * as animatable from 'react-native-animatable';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import defaultAvatarImg from '../assets/avatar.png';
@@ -58,25 +58,75 @@ export function PostCard({postData}: PostProps) {
   }
 
   return (
-    <animatable.View style={S.container} animation="bounceInLeft">
+    <animatable.View
+      style={{
+        height: 230,
+        marginBottom: 15,
+        borderRadius: 5,
+        padding: 15,
+        backgroundColor: colors.info,
+      }}
+      animation="bounceInLeft">
       <TouchableOpacity
         onPress={() => {
           navigate('userposts', {uid, name: postData.authorName});
         }}
-        style={S.navigateButton}>
+        style={{
+          flexDirection: 'row',
+          alignItems: 'center',
+          gap: 10,
+          backgroundColor: colors.primary,
+          borderRadius: 50,
+          padding: 5,
+        }}>
         <Image
           source={
             postData.avatarUrl ? {uri: postData.avatarUrl} : defaultAvatarImg
           }
-          style={S.avatar}
+          style={{width: 45, height: 45, borderRadius: 99}}
         />
-        <Text style={S.author}>{postData.authorName}</Text>
+        <Text
+          style={{
+            fontSize: 18,
+            color: colors.text,
+            fontFamily: fonts.regular,
+          }}>
+          {postData.authorName}
+        </Text>
       </TouchableOpacity>
-      <Text style={S.content}>{postData.content}</Text>
-      <View style={S.footerContainer}>
+      <Text
+        style={{
+          fontSize: 18,
+          height: 100,
+          fontFamily: fonts.regular,
+          color: colors.text,
+          marginTop: 10,
+          marginBottom: 10,
+        }}>
+        {postData.content}
+      </Text>
+      <View
+        style={{
+          flexDirection: 'row',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+        }}>
         {usersWhoLiked.length > 0 ? (
-          <View style={S.footerInnerContainer}>
-            <Text style={S.likesAmount}>{usersWhoLiked.length}</Text>
+          <View
+            style={{
+              flexDirection: 'row',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+            }}>
+            <Text
+              style={{
+                color: colors.text,
+                fontFamily: fonts.mono,
+                fontSize: 25,
+                marginRight: 5,
+              }}>
+              {usersWhoLiked.length}
+            </Text>
             <TouchableOpacity
               onPress={() => {
                 updateUsersWhoLikedAPost(postData.id);
@@ -89,8 +139,22 @@ export function PostCard({postData}: PostProps) {
             </TouchableOpacity>
           </View>
         ) : (
-          <View style={S.footerInnerContainer}>
-            <Text style={S.beTheFirstToLike}>Be the first to like </Text>
+          <View
+            style={{
+              flexDirection: 'row',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+            }}>
+            <Text
+              style={{
+                color: colors.text,
+                fontFamily: fonts.regular,
+                fontSize: 16,
+                marginRight: 5,
+                marginBottom: 4,
+              }}>
+              Be the first to like{' '}
+            </Text>
             <TouchableOpacity
               onPress={() => {
                 updateUsersWhoLikedAPost(postData.id);
@@ -103,72 +167,10 @@ export function PostCard({postData}: PostProps) {
             </TouchableOpacity>
           </View>
         )}
-        <Text style={S.time}>{dateFormatter(postData.timeStamp)}</Text>
+        <Text style={{fontSize: 17, color: colors.text, opacity: 0.7}}>
+          {dateFormatter(postData.timeStamp)}
+        </Text>
       </View>
     </animatable.View>
   );
 }
-
-const S = StyleSheet.create({
-  container: {
-    height: 230,
-    marginBottom: 15,
-    borderRadius: 5,
-    padding: 15,
-    backgroundColor: colors.info,
-  },
-
-  navigateButton: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 10,
-    backgroundColor: colors.primary,
-    borderRadius: 50,
-    padding: 5,
-  },
-
-  avatar: {width: 45, height: 45, borderRadius: 99},
-
-  author: {
-    fontSize: 18,
-    color: colors.text,
-    fontFamily: fonts.regular,
-  },
-
-  content: {
-    fontSize: 18,
-    height: 100,
-    fontFamily: fonts.regular,
-    color: colors.text,
-    marginTop: 10,
-    marginBottom: 10,
-  },
-
-  footerContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-  },
-
-  footerInnerContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-  },
-  likesAmount: {
-    color: colors.text,
-    fontFamily: fonts.mono,
-    fontSize: 25,
-    marginRight: 5,
-  },
-
-  beTheFirstToLike: {
-    color: colors.text,
-    fontFamily: fonts.regular,
-    fontSize: 16,
-    marginRight: 5,
-    marginBottom: 4,
-  },
-
-  time: {fontSize: 17, color: colors.text, opacity: 0.7},
-});

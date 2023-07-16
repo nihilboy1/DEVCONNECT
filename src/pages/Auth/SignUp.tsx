@@ -1,6 +1,6 @@
 import {useNavigation} from '@react-navigation/native';
 import {useEffect, useState} from 'react';
-import {Keyboard, ScrollView, StyleSheet} from 'react-native';
+import {Keyboard, ScrollView} from 'react-native';
 import * as Animatable from 'react-native-animatable';
 import {Button} from '../../components/Button';
 
@@ -53,11 +53,27 @@ export function SignUp() {
 
   return (
     <ScrollView
-      contentContainerStyle={[S.container, {gap: isKeyboardVisible ? 20 : 50}]}>
+      contentContainerStyle={[
+        {
+          alignItems: 'center',
+          backgroundColor: colors.background,
+          flex: 1,
+          padding: 10,
+        },
+        {gap: isKeyboardVisible ? 20 : 50},
+      ]}>
       {!isKeyboardVisible && (
         <Header moveButton={goBack} moveButtonText="Login" />
       )}
-      <Animatable.Text animation="fadeInLeft" style={S.pageTitle}>
+      <Animatable.Text
+        animation="fadeInLeft"
+        style={{
+          alignSelf: 'flex-start',
+          color: colors.text,
+          fontFamily: fonts.medium,
+          marginLeft: 2,
+          fontSize: 25,
+        }}>
         Sign Up
       </Animatable.Text>
       <AuthInput
@@ -92,72 +108,3 @@ export function SignUp() {
     </ScrollView>
   );
 }
-
-const S = StyleSheet.create({
-  container: {
-    alignItems: 'center',
-    backgroundColor: colors.background,
-    flex: 1,
-    padding: 10,
-  },
-
-  pageTitle: {
-    alignSelf: 'flex-start',
-    color: colors.text,
-    fontFamily: fonts.medium,
-    marginLeft: 2,
-    fontSize: 25,
-  },
-  inputBox: {
-    width: '100%',
-  },
-
-  inputLabelText: {
-    marginLeft: 3,
-    color: colors.info,
-    marginBottom: -5,
-  },
-
-  textInput: {
-    fontSize: 20,
-    borderBottomWidth: 1,
-    fontFamily: fonts.regular,
-    borderBottomColor: colors.info,
-    color: colors.text,
-    borderBottomRightRadius: 25,
-    paddingBottom: 5,
-  },
-
-  signUpButton: {
-    borderRadius: 15,
-    height: 60,
-    padding: 10,
-    width: 320,
-    paddingHorizontal: 20,
-    borderWidth: 1,
-    backgroundColor: colors.text,
-    borderColor: colors.background,
-  },
-
-  moveToLogin: {
-    color: colors.text,
-    fontSize: 20,
-    textAlign: 'center',
-    fontFamily: fonts.mono,
-  },
-
-  signUpButtonText: {
-    color: colors.background,
-    fontFamily: fonts.regular,
-    fontSize: 24,
-    textAlign: 'center',
-  },
-
-  header: {
-    width: '100%',
-    padding: 10,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-  },
-});

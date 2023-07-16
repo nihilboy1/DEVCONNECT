@@ -32,7 +32,7 @@ export function GroupCard({
       style={{
         borderWidth: 1,
         backgroundColor:
-          user?.uid === groupOwnerId ? colors.primary : colors.info,
+          user?.uid === groupOwnerId ? colors.info : colors.primary,
         padding: 18,
         borderRadius: 5,
         marginBottom: 10,

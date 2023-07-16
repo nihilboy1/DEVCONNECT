@@ -4,7 +4,6 @@ import {
   FlatList,
   Image,
   Pressable,
-  StyleSheet,
   Text,
   TextInput,
   TouchableOpacity,
@@ -16,7 +15,7 @@ import * as Animatable from 'react-native-animatable';
 import Feather from 'react-native-vector-icons/Feather';
 import {FirebaseUsersDatabase} from '../../connection/Firebase/database';
 import {PostsStackPrivateRoutesProps} from '../../routes/private.stack.posts.routes';
-import {colors, fonts} from '../../theme/theme';
+import {colors} from '../../theme/theme';
 import {userDTO} from '../../types/userDTO';
 
 export function SearchPosts() {
@@ -40,21 +39,58 @@ export function SearchPosts() {
     }, []),
   );
   return (
-    <View style={S.container}>
-      <Animatable.View animation="fadeInDown" style={S.header}>
-        <Pressable style={S.buttonBack} onPress={() => goBack()}>
+    <View
+      style={{
+        backgroundColor: colors.background,
+        padding: 15,
+        flex: 1,
+        borderWidth: 1,
+      }}>
+      <Animatable.View
+        animation="fadeInDown"
+        style={{
+          width: '100%',
+          padding: 10,
+          paddingTop: 0,
+          marginBottom: 10,
+          flexDirection: 'row',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+        }}>
+        <Pressable
+          style={{
+            backgroundColor: colors.info,
+            borderRadius: 5,
+            padding: 2,
+            paddingHorizontal: 8,
+            paddingRight: 10,
+          }}
+          onPress={() => goBack()}>
           <Feather name="chevron-left" size={32} color={colors.text} />
         </Pressable>
         <Image source={mainLogoDark} />
 
         <Feather name="chevron-left" size={32} color={colors.background} />
       </Animatable.View>
-      <View style={S.searchContainer}>
-        <Feather name="search" size={32} color={colors.black} />
+      <View
+        style={{
+          borderWidth: 1,
+          padding: 8,
+          borderRadius: 10,
+          backgroundColor: colors.primary,
+          flexDirection: 'row',
+          alignItems: 'center',
+          paddingLeft: 15,
+        }}>
+        <Feather name="search" size={32} color={colors.background} />
         <TextInput
           placeholder="Search for people"
           placeholderTextColor={colors.text}
-          style={S.inputText}
+          style={{
+            fontSize: 18,
+            color: colors.text,
+            marginLeft: 10,
+          }}
           onChangeText={value => {
             setUserName(value);
           }}
@@ -67,11 +103,25 @@ export function SearchPosts() {
         renderItem={({item}) => {
           return (
             <TouchableOpacity
-              style={S.userSearchedButton}
+              style={{
+                padding: 10,
+                borderWidth: 1,
+                marginTop: 10,
+                backgroundColor: colors.info,
+                borderRadius: 5,
+                justifyContent: 'center',
+              }}
               onPress={() => {
                 navigate('userposts', {name: item.name, uid: item.uid});
               }}>
-              <Text style={S.userSearchedButtonText}>{item.name}</Text>
+              <Text
+                style={{
+                  fontSize: 18,
+                  color: colors.text,
+                  fontWeight: 'bold',
+                }}>
+                {item.name}
+              </Text>
             </TouchableOpacity>
           );
         }}
@@ -79,60 +129,3 @@ export function SearchPosts() {
     </View>
   );
 }
-
-const S = StyleSheet.create({
-  userSearchedButton: {
-    padding: 10,
-    borderWidth: 1,
-    marginTop: 10,
-    backgroundColor: colors.info,
-    borderRadius: 5,
-    justifyContent: 'center',
-  },
-
-  buttonBack: {
-    backgroundColor: colors.info,
-    borderRadius: 5,
-    padding: 2,
-    paddingHorizontal: 8,
-    paddingRight: 10,
-  },
-
-  header: {
-    width: '100%',
-    padding: 10,
-    paddingTop: 0,
-    marginBottom: 10,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-  },
-
-  userSearchedButtonText: {
-    fontSize: 18,
-    color: colors.text,
-    fontWeight: 'bold',
-  },
-  container: {
-    backgroundColor: colors.background,
-    padding: 15,
-    flex: 1,
-    borderWidth: 1,
-  },
-  searchContainer: {
-    borderWidth: 1,
-    padding: 8,
-    borderRadius: 10,
-    backgroundColor: colors.primary,
-    fontFamily: fonts.regular,
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingLeft: 15,
-  },
-
-  inputText: {
-    fontSize: 18,
-    color: colors.text,
-    marginLeft: 10,
-  },
-});

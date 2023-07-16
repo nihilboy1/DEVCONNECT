@@ -1,6 +1,6 @@
 import {useFocusEffect} from '@react-navigation/native';
 import {useCallback, useState} from 'react';
-import {Alert, FlatList, Image, StyleSheet, View} from 'react-native';
+import {Alert, FlatList, Image, View} from 'react-native';
 import * as Animatable from 'react-native-animatable';
 import groupsLogoDark from '../../assets/groupsLogoDark.png';
 import {GroupCard} from '../../components/GroupCard';
@@ -11,7 +11,7 @@ import {
   FirebaseMessagesDatabase,
 } from '../../connection/Firebase/database';
 import {useAuthContext} from '../../hooks/useAuthContext';
-import {colors, fonts} from '../../theme/theme';
+import {colors} from '../../theme/theme';
 import {getGroupDTO} from '../../types/groupDTO';
 import {addMessageDTO} from '../../types/messageDTO';
 
@@ -118,8 +118,24 @@ export function Groups() {
   );
 
   return (
-    <View style={S.container}>
-      <Animatable.View animation="fadeInDown" style={S.header}>
+    <View
+      style={{
+        flex: 1,
+        position: 'relative',
+        padding: 15,
+        paddingTop: 5,
+        backgroundColor: colors.background,
+      }}>
+      <Animatable.View
+        animation="fadeInDown"
+        style={{
+          width: '100%',
+          padding: 10,
+          marginBottom: 10,
+          flexDirection: 'row',
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}>
         <Image source={groupsLogoDark} />
       </Animatable.View>
       <FlatList
@@ -150,28 +166,3 @@ export function Groups() {
     </View>
   );
 }
-
-const S = StyleSheet.create({
-  container: {
-    flex: 1,
-    position: 'relative',
-    padding: 15,
-    paddingTop: 5,
-    backgroundColor: colors.background,
-  },
-
-  header: {
-    width: '100%',
-    padding: 10,
-    marginBottom: 10,
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-
-  moveToText: {
-    color: colors.text,
-    fontSize: 20,
-    fontFamily: fonts.mono,
-  },
-});

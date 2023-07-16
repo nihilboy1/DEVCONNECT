@@ -4,7 +4,6 @@ import {
   Image,
   Keyboard,
   ScrollView,
-  StyleSheet,
   Text,
   TextInput,
   TouchableOpacity,
@@ -189,23 +188,60 @@ export function Profile() {
   }, []);
 
   return (
-    <ScrollView contentContainerStyle={S.container}>
-      <Text style={S.userEmailText}>{user.email}</Text>
+    <ScrollView
+      contentContainerStyle={{
+        flex: 1,
+        backgroundColor: colors.background,
+        alignItems: 'center',
+      }}>
+      <Text
+        style={{
+          fontSize: 22,
+          color: colors.text,
+          fontStyle: 'italic',
+          marginTop: 40,
+        }}>
+        {user.email}
+      </Text>
       {isKeyboardVisible ? null : (
         <View
           style={[
-            S.uploadAvatarView,
+            {
+              padding: 25,
+              position: 'relative',
+              marginTop: 25,
+            },
             !avatarUrl ? {} : {borderTopRightRadius: 5},
           ]}>
           {avatarUrl ? (
             <>
               <TouchableOpacity
                 onPress={updateUserAvatarUrl}
-                style={S.uploadAvatarIconBox1}>
+                style={{
+                  position: 'absolute',
+                  left: 20,
+                  bottom: 25,
+                  backgroundColor: colors.primary,
+                  padding: 4,
+                  borderRadius: 10,
+                  marginLeft: 5,
+                  marginTop: 5,
+                  zIndex: 99,
+                }}>
                 <Feather name="edit" size={28} color={colors.text} />
               </TouchableOpacity>
               <TouchableOpacity
-                style={S.uploadAvatarIconBox2}
+                style={{
+                  position: 'absolute',
+                  right: 20,
+                  top: 25,
+                  backgroundColor: colors.danger,
+                  padding: 4,
+                  borderRadius: 10,
+                  marginLeft: 5,
+                  marginTop: 5,
+                  zIndex: 99,
+                }}
                 onPress={removeUserAvatarUrl}>
                 <Feather name="x" size={28} color={colors.text} />
               </TouchableOpacity>
@@ -213,7 +249,17 @@ export function Profile() {
           ) : (
             <TouchableOpacity
               onPress={updateUserAvatarUrl}
-              style={S.uploadAvatarIconBox1}>
+              style={{
+                position: 'absolute',
+                left: 20,
+                bottom: 25,
+                backgroundColor: colors.primary,
+                padding: 4,
+                borderRadius: 10,
+                marginLeft: 5,
+                marginTop: 5,
+                zIndex: 99,
+              }}>
               <Feather name="file-plus" size={28} color={colors.text} />
             </TouchableOpacity>
           )}
@@ -225,7 +271,12 @@ export function Profile() {
             <Image
               source={!avatarUrl ? defaultAvatarImg : {uri: avatarUrl}}
               style={[
-                S.avatarImage,
+                {
+                  borderRadius: 100,
+                  width: 150,
+                  height: 150,
+                  borderWidth: 3,
+                },
                 !avatarUrl ? {} : {borderColor: colors.primary},
               ]}
             />
@@ -244,7 +295,15 @@ export function Profile() {
           marginTop: 35,
         }}>
         <TextInput
-          style={S.userNameText}
+          style={{
+            fontSize: 30,
+            color: colors.text,
+            backgroundColor: colors.info,
+            height: 50,
+            borderRadius: 5,
+            padding: 5,
+            paddingHorizontal: 20,
+          }}
           maxLength={15}
           value={currentName}
           onChangeText={value => {
@@ -268,88 +327,24 @@ export function Profile() {
         </TouchableOpacity>
       </View>
       {isKeyboardVisible ? null : (
-        <TouchableOpacity style={S.signOutButton} onPress={signOut}>
-          <Text style={S.buttonText}>Sign Out</Text>
+        <TouchableOpacity
+          style={{
+            backgroundColor: colors.danger,
+            borderRadius: 10,
+            padding: 12,
+            marginTop: 100,
+          }}
+          onPress={signOut}>
+          <Text
+            style={{
+              fontSize: 18,
+              fontWeight: 'bold',
+              color: colors.text,
+            }}>
+            Sign Out
+          </Text>
         </TouchableOpacity>
       )}
     </ScrollView>
   );
 }
-
-const S = StyleSheet.create({
-  signOutButton: {
-    backgroundColor: colors.danger,
-    borderRadius: 10,
-    padding: 12,
-    marginTop: 100,
-  },
-
-  uploadAvatarIconBox1: {
-    position: 'absolute',
-    left: 20,
-    bottom: 25,
-    backgroundColor: colors.primary,
-    padding: 4,
-    borderRadius: 10,
-    marginLeft: 5,
-    marginTop: 5,
-    zIndex: 99,
-  },
-
-  uploadAvatarIconBox2: {
-    position: 'absolute',
-    right: 20,
-    top: 25,
-    backgroundColor: colors.danger,
-    padding: 4,
-    borderRadius: 10,
-    marginLeft: 5,
-    marginTop: 5,
-    zIndex: 99,
-  },
-
-  uploadAvatarView: {
-    padding: 25,
-    position: 'relative',
-    marginTop: 25,
-  },
-
-  updateProfileButton: {
-    borderRadius: 10,
-    backgroundColor: colors.primary,
-    padding: 12,
-    marginTop: 25,
-  },
-  buttonText: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    color: colors.text,
-  },
-  userNameText: {
-    fontSize: 30,
-    color: colors.text,
-    backgroundColor: colors.info,
-    height: 50,
-    borderRadius: 5,
-    padding: 5,
-    paddingHorizontal: 20,
-  },
-  userEmailText: {
-    fontSize: 22,
-    color: colors.text,
-    fontStyle: 'italic',
-    marginTop: 40,
-  },
-  container: {
-    flex: 1,
-    borderWidth: 1,
-    backgroundColor: colors.background,
-    alignItems: 'center',
-  },
-  avatarImage: {
-    borderRadius: 100,
-    width: 150,
-    height: 150,
-    borderWidth: 3,
-  },
-});

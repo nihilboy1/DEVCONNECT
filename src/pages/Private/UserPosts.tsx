@@ -4,7 +4,7 @@ import {
   useRoute,
 } from '@react-navigation/native';
 import {useCallback, useState} from 'react';
-import {Pressable, StyleSheet, Text, View} from 'react-native';
+import {Pressable, Text, View} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import Feather from 'react-native-vector-icons/Feather';
 import {PostsList} from '../../components/PostsList';
@@ -41,12 +41,41 @@ export function UserPosts() {
     }, []),
   );
   return (
-    <SafeAreaView style={S.safeContainer}>
-      <View style={S.innerContainer}>
-        <Pressable style={S.buttonBack} onPress={() => goBack()}>
+    <SafeAreaView
+      style={{
+        flex: 1,
+        borderWidth: 1,
+        padding: 10,
+        backgroundColor: colors.background,
+        justifyContent: 'center',
+      }}>
+      <View
+        style={{
+          flexDirection: 'row',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          marginBottom: 10,
+        }}>
+        <Pressable
+          style={{
+            backgroundColor: colors.info,
+            borderRadius: 5,
+            padding: 2,
+            paddingHorizontal: 8,
+            paddingRight: 10,
+          }}
+          onPress={() => goBack()}>
           <Feather name="chevron-left" size={32} color={colors.text} />
         </Pressable>
-        <Text style={S.postsAuthor}>
+        <Text
+          style={{
+            textAlign: 'center',
+            fontWeight: 'bold',
+            fontSize: 30,
+            marginTop: 5,
+            marginBottom: 10,
+            color: colors.text,
+          }}>
           {user?.name == name ? 'Seus Posts' : name}
         </Text>
         <Pressable>
@@ -61,42 +90,3 @@ export function UserPosts() {
     </SafeAreaView>
   );
 }
-
-const S = StyleSheet.create({
-  safeContainer: {
-    flex: 1,
-    borderWidth: 1,
-    padding: 10,
-    backgroundColor: colors.background,
-    justifyContent: 'center',
-  },
-  innerContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: 10,
-  },
-  buttonBack: {
-    backgroundColor: colors.info,
-    borderRadius: 5,
-    padding: 2,
-    paddingHorizontal: 8,
-    paddingRight: 10,
-  },
-
-  goBackButton: {
-    justifyContent: 'center',
-    alignItems: 'flex-start',
-    width: 30,
-    borderRadius: 99,
-  },
-
-  postsAuthor: {
-    textAlign: 'center',
-    fontWeight: 'bold',
-    fontSize: 30,
-    marginTop: 5,
-    marginBottom: 10,
-    color: colors.text,
-  },
-});

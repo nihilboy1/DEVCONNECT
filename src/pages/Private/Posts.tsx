@@ -1,7 +1,7 @@
 import {FirebaseFirestoreTypes} from '@react-native-firebase/firestore';
 import {useFocusEffect, useNavigation} from '@react-navigation/native';
 import {useCallback, useState} from 'react';
-import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {Image, Text, TouchableOpacity, View} from 'react-native';
 import * as Animatable from 'react-native-animatable';
 import Toast from 'react-native-toast-message';
 import Feather from 'react-native-vector-icons/Feather';
@@ -133,15 +133,38 @@ export function Posts() {
   );
 
   return (
-    <View style={S.container}>
-      <Animatable.View animation="fadeInDown" style={S.header}>
+    <View
+      style={{
+        flex: 1,
+        position: 'relative',
+        padding: 15,
+        paddingTop: 5,
+        backgroundColor: colors.background,
+      }}>
+      <Animatable.View
+        animation="fadeInDown"
+        style={{
+          width: '100%',
+          padding: 10,
+          marginBottom: 10,
+          flexDirection: 'row',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+        }}>
         <Image source={postsLogoDark} />
         <TouchableOpacity
           onPress={() => {
             navigate('searchPosts');
           }}
           style={{flexDirection: 'row', gap: 8, alignItems: 'center'}}>
-          <Text style={S.moveToText}>Search</Text>
+          <Text
+            style={{
+              color: colors.text,
+              fontSize: 20,
+              fontFamily: fonts.mono,
+            }}>
+            Search
+          </Text>
           <Feather name="search" color={colors.text} size={22} />
         </TouchableOpacity>
       </Animatable.View>
@@ -164,28 +187,3 @@ export function Posts() {
     </View>
   );
 }
-
-const S = StyleSheet.create({
-  container: {
-    flex: 1,
-    position: 'relative',
-    padding: 15,
-    paddingTop: 5,
-    backgroundColor: colors.background,
-  },
-
-  header: {
-    width: '100%',
-    padding: 10,
-    marginBottom: 10,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-  },
-
-  moveToText: {
-    color: colors.text,
-    fontSize: 20,
-    fontFamily: fonts.mono,
-  },
-});

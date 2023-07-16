@@ -1,4 +1,4 @@
-import {StyleSheet, Text, View} from 'react-native';
+import {Text, View} from 'react-native';
 import {useAuthContext} from '../hooks/useAuthContext';
 import {colors, fonts} from '../theme/theme';
 
@@ -20,7 +20,11 @@ export function MessageCard({author, content, timeStamp}: MessageCardProps) {
   return (
     <View
       style={[
-        S.container,
+        {
+          flex: 1,
+          padding: 10,
+          marginBottom: 10,
+        },
         {
           backgroundColor:
             author.uid == 'system'
@@ -88,11 +92,3 @@ export function MessageCard({author, content, timeStamp}: MessageCardProps) {
     </View>
   );
 }
-
-const S = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: 10,
-    marginBottom: 10,
-  },
-});

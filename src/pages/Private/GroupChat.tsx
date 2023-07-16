@@ -4,7 +4,6 @@ import {
   FlatList,
   KeyboardAvoidingView,
   Platform,
-  StyleSheet,
   Text,
   TextInput,
   TouchableOpacity,
@@ -70,7 +69,16 @@ export function GroupChat() {
 
   return (
     <SafeAreaView style={{flex: 1, backgroundColor: colors.background}}>
-      <Animatable.View animation="fadeInDown" style={S.header}>
+      <Animatable.View
+        animation="fadeInDown"
+        style={{
+          width: '100%',
+          padding: 10,
+          marginBottom: 10,
+          flexDirection: 'row',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+        }}>
         <TouchableOpacity
           onPress={() => {
             goBack();
@@ -161,14 +169,3 @@ export function GroupChat() {
     </SafeAreaView>
   );
 }
-
-const S = StyleSheet.create({
-  header: {
-    width: '100%',
-    padding: 10,
-    marginBottom: 10,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-  },
-});
