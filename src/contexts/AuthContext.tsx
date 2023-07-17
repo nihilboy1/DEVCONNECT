@@ -2,7 +2,7 @@ import {ReactNode, createContext, useEffect, useState} from 'react';
 import {AsyncStorageUser} from '../connection/AsyncStorage/userStorage';
 import {FirebaseUserAuth} from '../connection/Firebase/auth';
 import {FirebaseUsersDatabase} from '../connection/Firebase/database';
-import {userDTO} from '../types/userDTO';
+import {inUseThemeProps, userDTO} from '../types/userDTO';
 import {showToast} from '../utils/toastConfig';
 
 type ContextDataProps = {
@@ -38,6 +38,7 @@ export function AuthContextProvider({children}: ContextProviderProps) {
         const user = {
           uid,
           name,
+          inUseTheme: 'dark' as inUseThemeProps,
           avatarUrl: null,
           nameInsensitive: name.toUpperCase(),
           email,
@@ -63,6 +64,7 @@ export function AuthContextProvider({children}: ContextProviderProps) {
         if (response !== undefined) {
           const user: userDTO = {
             uid: response.uid,
+            inUseTheme: response.inUseTheme,
             name: response.name,
             nameInsensitive: response.nameInsensitive,
             email: response.email,

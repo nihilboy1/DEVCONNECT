@@ -130,8 +130,14 @@ export function Posts() {
 
   useFocusEffect(
     useCallback(() => {
+      let componentIsMounted = true;
+
       getOlderPostsFromAllUser();
       setRandomPlaceholder();
+
+      return () => {
+        componentIsMounted = false;
+      };
     }, []),
   );
 

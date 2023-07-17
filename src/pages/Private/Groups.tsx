@@ -111,13 +111,26 @@ export function Groups() {
 
   useFocusEffect(
     useCallback(() => {
-      getAllGroups();
+      let componentIsMounted = true;
+      if (componentIsMounted) {
+        getAllGroups();
+      }
+
+      return () => {
+        componentIsMounted = false;
+      };
     }, []),
   );
 
   useFocusEffect(
     useCallback(() => {
+      let componentIsMounted = true;
+
       getAllGroups();
+
+      return () => {
+        componentIsMounted = false;
+      };
     }, [theresNoMoreGroups]),
   );
 

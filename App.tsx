@@ -10,8 +10,8 @@ import {toastConfig} from './src/utils/toastConfig';
 export default function App() {
   return (
     <NavigationContainer>
-      <ThemeContextProvider>
-        <AuthContextProvider>
+      <AuthContextProvider>
+        <ThemeContextProvider>
           <SafeAreaView
             style={{
               flex: 1,
@@ -25,8 +25,8 @@ export default function App() {
             <Routes />
           </SafeAreaView>
           <Toast config={toastConfig} />
-        </AuthContextProvider>
-      </ThemeContextProvider>
+        </ThemeContextProvider>
+      </AuthContextProvider>
     </NavigationContainer>
   );
 }

@@ -34,15 +34,36 @@ export function Profile() {
   const [isKeyboardVisible, setKeyboardVisible] = useState(false);
   const [updatingUserName, setUpdatingUserName] = useState(false);
   const [updatingUserAvatarUrl, setUpdatingUserAvatarUrl] = useState(false);
+  const [updatingUserTheme, setUpdatingUserTheme] = useState(false);
   const [oldName, setOldName] = useState(user.name);
   const [currentName, setCurrentName] = useState<string>(user.name);
   const [avatarUrl, setAvatarUrl] = useState<string | null>(user.avatarUrl);
   const [disabledButton, setDisabledButton] = useState<boolean>(true);
-  function handleChangeTheme() {
-    if (theme === 'dark') {
-      setTheme('light');
-    } else if (theme === 'light') {
-      setTheme('dark');
+  async function updateUserTheme() {
+    try {
+      setUpdatingUserTheme(true);
+      if (!user?.uid) {
+        return;
+      }
+      await FirebaseUsersDatabase.Update({inUseTheme: theme}, user.uid);
+      const response = await FirebaseUsersDatabase.Get(user.uid);
+      if (response !== undefined) {
+        const user = {
+          uid: response.uid,
+          name: response.name,
+          inUseTheme: response.inUseTheme,
+          nameInsensitive: response.nameInsensitive,
+          email: response.email,
+          avatarUrl: response.avatarUrl,
+          timeStamp: response.timeStamp,
+        } as userDTO;
+        await AsyncStorageUser.Set(user);
+        setUser(user);
+      }
+    } catch (error) {
+      throw error;
+    } finally {
+      setUpdatingUserTheme(false);
     }
   }
   async function updateUserName() {
@@ -60,6 +81,7 @@ export function Profile() {
         const user = {
           uid: response.uid,
           name: response.name,
+          inUseTheme: response.inUseTheme,
           nameInsensitive: response.nameInsensitive,
           email: response.email,
           avatarUrl: response.avatarUrl,
@@ -104,6 +126,7 @@ export function Profile() {
             const user = {
               uid: response.uid,
               name: response.name,
+              inUseTheme: response.inUseTheme,
               nameInsensitive: response.nameInsensitive,
               email: response.email,
               avatarUrl: response.avatarUrl,
@@ -143,6 +166,7 @@ export function Profile() {
         const user = {
           uid: response.uid,
           name: response.name,
+          inUseTheme: response.inUseTheme,
           nameInsensitive: response.nameInsensitive,
           email: response.email,
           avatarUrl: response.avatarUrl,
@@ -196,6 +220,10 @@ export function Profile() {
     };
   }, []);
 
+  useEffect(() => {
+    updateUserTheme();
+  }, [theme]);
+
   return (
     <ScrollView
       contentContainerStyle={{
@@ -213,10 +241,17 @@ export function Profile() {
           {theme === 'dark' ? 'DARKMODE' : 'LIGHTMODE'}
         </Text>
         <Switch
+          disabled={updatingUserTheme}
           trackColor={{false: colors.primary, true: colors.primary}}
           thumbColor={colors.text}
           ios_backgroundColor="#3e3e3e"
-          onValueChange={handleChangeTheme}
+          onValueChange={() => {
+            if (theme === 'dark') {
+              setTheme('light');
+            } else if (theme === 'light') {
+              setTheme('dark');
+            }
+          }}
           value={theme === 'dark' ? false : true}
         />
       </View>

@@ -1,4 +1,6 @@
-import {ReactNode, createContext, useState} from 'react';
+import {ReactNode, createContext, useEffect, useState} from 'react';
+import {useColorScheme} from 'react-native';
+import {useAuthContext} from '../hooks/useAuthContext';
 
 type ContextDataProps = {
   colors: {
@@ -29,6 +31,8 @@ type ContextProviderProps = {
 };
 
 export function ThemeContextProvider({children}: ContextProviderProps) {
+  const {user, loggedInUser} = useAuthContext();
+  const deviceTheme = useColorScheme();
   const [theme, setTheme] = useState<'dark' | 'light'>('dark');
   const colors = {
     primary: theme === 'dark' ? '#2D3240' : '#6C6D73',
@@ -39,13 +43,24 @@ export function ThemeContextProvider({children}: ContextProviderProps) {
     text: theme === 'dark' ? '#F2F2F2' : '#161A26',
     overlay: 'rgba(7, 12, 32, 0.5)',
   };
-
   const fonts = {
     mono: 'CutiveMono-Regular',
     regular: 'Rubik-Regular',
     medium: 'Rubik-Medium',
     bold: 'Rubik-Bold',
   };
+
+  useEffect(() => {
+    if (user?.inUseTheme) {
+      setTheme(user.inUseTheme);
+    }
+  }, [loggedInUser]);
+
+  useEffect(() => {
+    if (deviceTheme) {
+      setTheme(deviceTheme);
+    }
+  }, [deviceTheme]);
 
   return (
     <ThemeContext.Provider value={{colors, fonts, theme, setTheme}}>
