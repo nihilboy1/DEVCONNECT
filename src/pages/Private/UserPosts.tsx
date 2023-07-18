@@ -16,7 +16,7 @@ import {getPostDTO} from '../../types/postDTO';
 
 export function UserPosts() {
   const {user} = useAuthContext();
-  const {colors} = useThemeContext();
+  const {colors, theme} = useThemeContext();
 
   const {goBack} = useNavigation();
   const [userPosts, setUserPosts] = useState<getPostDTO[]>([]);
@@ -67,7 +67,11 @@ export function UserPosts() {
             paddingRight: 10,
           }}
           onPress={() => goBack()}>
-          <Feather name="chevron-left" size={32} color={colors.text} />
+          <Feather
+            name="chevron-left"
+            size={32}
+            color={theme === 'dark' ? colors.text : colors.background}
+          />
         </Pressable>
         <Text
           style={{
@@ -78,7 +82,7 @@ export function UserPosts() {
             marginBottom: 10,
             color: colors.text,
           }}>
-          {user?.name == name ? 'Seus Posts' : name}
+          {user?.name == name ? 'Your posts' : name}
         </Text>
         <Pressable>
           <Feather name="chevron-left" size={32} color={colors.background} />

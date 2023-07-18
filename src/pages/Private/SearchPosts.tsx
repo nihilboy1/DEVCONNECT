@@ -10,6 +10,7 @@ import {
   View,
 } from 'react-native';
 import mainLogoDark from '../../assets/mainLogoDark.png';
+import mainLogoLight from '../../assets/mainLogoLight.png';
 
 import * as Animatable from 'react-native-animatable';
 import Feather from 'react-native-vector-icons/Feather';
@@ -19,7 +20,7 @@ import {PostsStackPrivateRoutesProps} from '../../routes/private.stack.posts.rou
 import {userDTO} from '../../types/userDTO';
 
 export function SearchPosts() {
-  const {colors} = useThemeContext();
+  const {colors, theme} = useThemeContext();
 
   const {navigate, goBack} = useNavigation<PostsStackPrivateRoutesProps>();
   const [userName, setUserName] = useState('');
@@ -52,8 +53,6 @@ export function SearchPosts() {
         animation="fadeInDown"
         style={{
           width: '100%',
-          padding: 10,
-          paddingTop: 0,
           marginBottom: 10,
           flexDirection: 'row',
           justifyContent: 'space-between',
@@ -66,12 +65,16 @@ export function SearchPosts() {
             padding: 2,
             paddingHorizontal: 8,
             paddingRight: 10,
+            marginTop: 5,
           }}
           onPress={() => goBack()}>
-          <Feather name="chevron-left" size={32} color={colors.text} />
+          <Feather
+            name="chevron-left"
+            size={32}
+            color={theme === 'dark' ? colors.text : colors.background}
+          />
         </Pressable>
-        <Image source={mainLogoDark} />
-
+        <Image source={theme === 'dark' ? mainLogoDark : mainLogoLight} />
         <Feather name="chevron-left" size={32} color={colors.background} />
       </Animatable.View>
       <View
@@ -119,7 +122,7 @@ export function SearchPosts() {
               <Text
                 style={{
                   fontSize: 18,
-                  color: colors.text,
+                  color: theme === 'dark' ? colors.text : colors.background,
                   fontWeight: 'bold',
                 }}>
                 {item.name}
