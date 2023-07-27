@@ -1,3 +1,4 @@
+import {UsersThree} from 'phosphor-react-native';
 import {useEffect, useState} from 'react';
 import {
   Modal,
@@ -7,7 +8,6 @@ import {
   TouchableWithoutFeedback,
   View,
 } from 'react-native';
-import AntDesign from 'react-native-vector-icons/AntDesign';
 import {FirebaseGroupsDatabase} from '../connection/Firebase/database';
 import {useAuthContext} from '../hooks/useAuthContext';
 import {useThemeContext} from '../hooks/useThemeContext';
@@ -113,7 +113,7 @@ export function NewGroupModal({
               }}>
               Create new group
             </Text>
-            <AntDesign name="team" size={32} color={colors.text} />
+            <UsersThree size={32} color={colors.text} />
           </View>
           <Pressable
             style={{

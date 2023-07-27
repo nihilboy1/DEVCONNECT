@@ -1,10 +1,10 @@
 import {useFocusEffect} from '@react-navigation/native';
+import {Plus} from 'phosphor-react-native';
 import {useCallback, useState} from 'react';
 import {Alert, FlatList, Image, View} from 'react-native';
 import * as Animatable from 'react-native-animatable';
 import groupsLogoDark from '../../assets/groupsLogoDark.png';
 import groupsLogoLight from '../../assets/groupsLogoLight.png';
-
 import {GroupCard} from '../../components/GroupCard';
 import {NewGroupModal} from '../../components/NewGroupModal';
 import {OpenModalWidget} from '../../components/OpenModalWidget';
@@ -171,7 +171,10 @@ export function Groups() {
           );
         }}
       />
-      <OpenModalWidget iconName="plus" setModalVisible={setModalVisible} />
+      <OpenModalWidget
+        Icon={<Plus color={colors.background} size={25} />}
+        setModalVisible={setModalVisible}
+      />
       <NewGroupModal
         setGroupName={setGroupName}
         groupName={groupName}

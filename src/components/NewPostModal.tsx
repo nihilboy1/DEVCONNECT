@@ -1,3 +1,4 @@
+import {Coffee} from 'phosphor-react-native';
 import {useEffect, useState} from 'react';
 import {
   Modal,
@@ -7,7 +8,6 @@ import {
   TouchableWithoutFeedback,
   View,
 } from 'react-native';
-import Feather from 'react-native-vector-icons/Feather';
 import {useThemeContext} from '../hooks/useThemeContext';
 import {Loading} from './Loading';
 
@@ -101,7 +101,7 @@ export function NewPostModal({
               }}>
               Add a new post
             </Text>
-            <Feather name="coffee" size={32} color={colors.text} />
+            <Coffee size={32} color={colors.text} />
           </View>
           <Pressable
             style={{

@@ -1,4 +1,5 @@
 import {useNavigation, useRoute} from '@react-navigation/native';
+import {CaretLeft, PaperPlaneTilt} from 'phosphor-react-native';
 import {useEffect, useState} from 'react';
 import {
   FlatList,
@@ -11,7 +12,6 @@ import {
 } from 'react-native';
 import * as Animatable from 'react-native-animatable';
 import {SafeAreaView} from 'react-native-safe-area-context';
-import Feather from 'react-native-vector-icons/Feather';
 import {Loading} from '../../components/Loading';
 import {MessageCard} from '../../components/MessageCard';
 import {FirebaseMessagesDatabase} from '../../connection/Firebase/database';
@@ -88,7 +88,7 @@ export function GroupChat() {
           style={{
             alignItems: 'center',
           }}>
-          <Feather name="chevron-left" size={32} color={colors.text} />
+          <CaretLeft size={32} color={colors.text} />
         </TouchableOpacity>
         <Text
           style={{color: colors.text, fontFamily: fonts.mono, fontSize: 20}}>
@@ -98,7 +98,7 @@ export function GroupChat() {
           style={{
             alignItems: 'center',
           }}>
-          <Feather name="chevron-left" size={32} color={colors.background} />
+          <CaretLeft size={32} color={colors.background} />
         </View>
       </Animatable.View>
       <FlatList
@@ -165,7 +165,7 @@ export function GroupChat() {
                 <Loading spinColor={colors.text} size={20} />
               </View>
             ) : (
-              <Feather name="send" color={colors.text} size={22} />
+              <PaperPlaneTilt color={colors.text} size={22} />
             )}
           </TouchableOpacity>
         </View>

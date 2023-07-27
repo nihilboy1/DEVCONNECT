@@ -2,9 +2,7 @@ import {
   BottomTabNavigationProp,
   createBottomTabNavigator,
 } from '@react-navigation/bottom-tabs';
-import AntDesign from 'react-native-vector-icons/AntDesign';
-import Feather from 'react-native-vector-icons/Feather';
-
+import {BookBookmark, Chat, User} from 'phosphor-react-native';
 import {useThemeContext} from '../hooks/useThemeContext';
 import {Profile} from '../pages/Private/Profile';
 import {PrivateStackGroupsRoutes} from './private.stack.groups.routes';
@@ -43,7 +41,7 @@ export function TabPrivateRoutes() {
         component={PrivateStackPostsRoutes}
         options={{
           tabBarIcon: ({color, size}) => {
-            return <AntDesign name="book" color={color} size={size} />;
+            return <BookBookmark color={color} size={size} />;
           },
         }}
       />
@@ -52,7 +50,7 @@ export function TabPrivateRoutes() {
         component={PrivateStackGroupsRoutes}
         options={{
           tabBarIcon: ({color, size}) => {
-            return <Feather name="message-square" color={color} size={size} />;
+            return <Chat color={color} size={size} />;
           },
         }}
       />
@@ -61,7 +59,7 @@ export function TabPrivateRoutes() {
         component={Profile}
         options={{
           tabBarIcon: ({color, size}) => {
-            return <Feather name="user" color={color} size={size} />;
+            return <User color={color} size={size} />;
           },
         }}
       />

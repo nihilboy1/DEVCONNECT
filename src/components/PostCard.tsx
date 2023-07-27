@@ -1,9 +1,9 @@
 import {useNavigation} from '@react-navigation/native';
 import {formatDistance} from 'date-fns';
+import {Heart} from 'phosphor-react-native';
 import {useState} from 'react';
 import {Image, Text, TouchableOpacity, View} from 'react-native';
 import * as animatable from 'react-native-animatable';
-import AntDesign from 'react-native-vector-icons/AntDesign';
 import defaultAvatarImg from '../assets/avatar.png';
 import {FirebasePostsDatabase} from '../connection/Firebase/database';
 import {useAuthContext} from '../hooks/useAuthContext';
@@ -29,9 +29,7 @@ export function PostCard({postData}: PostProps) {
   const currentUserId = user.uid;
   const uid = postData.uid;
 
-  const likedByCurrentUser = usersWhoLiked.includes(currentUserId)
-    ? 'heart'
-    : 'hearto';
+  const likedByCurrentUser = usersWhoLiked.includes(currentUserId)!!;
 
   async function updateUsersWhoLikedAPost(id: string) {
     if (!usersWhoLiked.includes(currentUserId)) {
@@ -137,8 +135,8 @@ export function PostCard({postData}: PostProps) {
               onPress={() => {
                 updateUsersWhoLikedAPost(postData.id);
               }}>
-              <AntDesign
-                name={likedByCurrentUser}
+              <Heart
+                weight={likedByCurrentUser ? 'fill' : 'regular'}
                 size={25}
                 color={colors.danger}
               />
@@ -165,8 +163,8 @@ export function PostCard({postData}: PostProps) {
               onPress={() => {
                 updateUsersWhoLikedAPost(postData.id);
               }}>
-              <AntDesign
-                name={likedByCurrentUser}
+              <Heart
+                weight={likedByCurrentUser ? 'fill' : 'regular'}
                 size={25}
                 color={colors.danger}
               />

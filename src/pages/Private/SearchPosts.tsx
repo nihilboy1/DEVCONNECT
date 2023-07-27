@@ -1,4 +1,5 @@
 import {useFocusEffect, useNavigation} from '@react-navigation/native';
+import {CaretLeft, MagnifyingGlass} from 'phosphor-react-native';
 import {useCallback, useEffect, useState} from 'react';
 import {
   FlatList,
@@ -13,7 +14,6 @@ import mainLogoDark from '../../assets/mainLogoDark.png';
 import mainLogoLight from '../../assets/mainLogoLight.png';
 
 import * as Animatable from 'react-native-animatable';
-import Feather from 'react-native-vector-icons/Feather';
 import {FirebaseUsersDatabase} from '../../connection/Firebase/database';
 import {useThemeContext} from '../../hooks/useThemeContext';
 import {PostsStackPrivateRoutesProps} from '../../routes/private.stack.posts.routes';
@@ -68,14 +68,13 @@ export function SearchPosts() {
             marginTop: 5,
           }}
           onPress={() => goBack()}>
-          <Feather
-            name="chevron-left"
+          <CaretLeft
             size={32}
             color={theme === 'dark' ? colors.text : colors.background}
           />
         </Pressable>
         <Image source={theme === 'dark' ? mainLogoDark : mainLogoLight} />
-        <Feather name="chevron-left" size={32} color={colors.background} />
+        <CaretLeft size={32} color={colors.background} />
       </Animatable.View>
       <View
         style={{
@@ -87,7 +86,8 @@ export function SearchPosts() {
           alignItems: 'center',
           paddingLeft: 15,
         }}>
-        <Feather name="search" size={32} color={colors.background} />
+        <MagnifyingGlass size={32} color={colors.background} />
+
         <TextInput
           placeholder="Search for people"
           placeholderTextColor={colors.text}

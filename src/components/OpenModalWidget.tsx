@@ -1,16 +1,12 @@
 import {TouchableOpacity} from 'react-native';
-import Entypo from 'react-native-vector-icons/Entypo';
 import {useThemeContext} from '../hooks/useThemeContext';
 
 type OpenModalWidgetProps = {
   setModalVisible: (value: boolean) => void;
-  iconName: string;
+  Icon: JSX.Element;
 };
 
-export function OpenModalWidget({
-  setModalVisible,
-  iconName,
-}: OpenModalWidgetProps) {
+export function OpenModalWidget({setModalVisible, Icon}: OpenModalWidgetProps) {
   const {colors} = useThemeContext();
 
   return (
@@ -30,7 +26,7 @@ export function OpenModalWidget({
         justifyContent: 'center',
         alignItems: 'center',
       }}>
-      <Entypo name={iconName} color={colors.background} size={25} />
+      {Icon}
     </TouchableOpacity>
   );
 }

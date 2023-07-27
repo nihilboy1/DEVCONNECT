@@ -1,4 +1,5 @@
 import {useFocusEffect} from '@react-navigation/native';
+import {FilePlus, FloppyDisk, Swap, X} from 'phosphor-react-native';
 import {useCallback, useEffect, useState} from 'react';
 import {
   Image,
@@ -11,7 +12,6 @@ import {
   View,
 } from 'react-native';
 import {launchImageLibrary} from 'react-native-image-picker';
-import Feather from 'react-native-vector-icons/Feather';
 import defaultAvatarImg from '../../assets/avatar.png';
 import {Loading} from '../../components/Loading';
 import {AsyncStorageUser} from '../../connection/AsyncStorage/userStorage';
@@ -29,7 +29,7 @@ export function Profile() {
   const {colors, fonts, theme, setTheme} = useThemeContext();
 
   if (!user?.uid) {
-    return;
+    return null;
   }
   const [isKeyboardVisible, setKeyboardVisible] = useState(false);
   const [updatingUserName, setUpdatingUserName] = useState(false);
@@ -231,30 +231,32 @@ export function Profile() {
         backgroundColor: colors.background,
         alignItems: 'center',
       }}>
-      <View
-        style={{
-          marginTop: 50,
-          alignItems: 'center',
-          justifyContent: 'center',
-        }}>
-        <Text style={{color: colors.text, fontFamily: fonts.bold}}>
-          {theme === 'dark' ? 'DARKMODE' : 'LIGHTMODE'}
-        </Text>
-        <Switch
-          disabled={updatingUserTheme}
-          trackColor={{false: colors.primary, true: colors.primary}}
-          thumbColor={colors.text}
-          ios_backgroundColor="#3e3e3e"
-          onValueChange={() => {
-            if (theme === 'dark') {
-              setTheme('light');
-            } else if (theme === 'light') {
-              setTheme('dark');
-            }
-          }}
-          value={theme === 'dark' ? false : true}
-        />
-      </View>
+      {isKeyboardVisible ? null : (
+        <View
+          style={{
+            marginTop: 50,
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}>
+          <Text style={{color: colors.text, fontFamily: fonts.bold}}>
+            {theme === 'dark' ? 'DARKMODE' : 'LIGHTMODE'}
+          </Text>
+          <Switch
+            disabled={updatingUserTheme}
+            trackColor={{false: colors.primary, true: colors.primary}}
+            thumbColor={colors.text}
+            ios_backgroundColor="#3e3e3e"
+            onValueChange={() => {
+              if (theme === 'dark') {
+                setTheme('light');
+              } else if (theme === 'light') {
+                setTheme('dark');
+              }
+            }}
+            value={theme === 'dark' ? false : true}
+          />
+        </View>
+      )}
       <View
         style={[
           {
@@ -277,7 +279,7 @@ export function Profile() {
                 marginLeft: 5,
                 zIndex: 99,
               }}>
-              <Feather name="edit" size={28} color={colors.text} />
+              <Swap size={28} color={colors.text} />
             </TouchableOpacity>
             <TouchableOpacity
               style={{
@@ -292,7 +294,7 @@ export function Profile() {
                 zIndex: 99,
               }}
               onPress={removeUserAvatarUrl}>
-              <Feather name="x" size={28} color={colors.text} />
+              <X size={28} color={colors.text} />
             </TouchableOpacity>
           </>
         ) : (
@@ -309,7 +311,7 @@ export function Profile() {
               marginTop: 5,
               zIndex: 99,
             }}>
-            <Feather name="file-plus" size={28} color={colors.text} />
+            <FilePlus size={28} color={colors.text} />
           </TouchableOpacity>
         )}
         {updatingUserAvatarUrl ? (
@@ -374,7 +376,7 @@ export function Profile() {
           {updatingUserName ? (
             <Loading spinColor={colors.text} size={28} />
           ) : (
-            <Feather name="save" size={28} color={colors.text} />
+            <FloppyDisk size={28} color={colors.text} />
           )}
         </TouchableOpacity>
       </View>

@@ -3,10 +3,10 @@ import {
   useNavigation,
   useRoute,
 } from '@react-navigation/native';
+import {CaretLeft} from 'phosphor-react-native';
 import {useCallback, useState} from 'react';
 import {Pressable, Text, View} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
-import Feather from 'react-native-vector-icons/Feather';
 import {PostsList} from '../../components/PostsList';
 import {FirebasePostsDatabase} from '../../connection/Firebase/database';
 import {useAuthContext} from '../../hooks/useAuthContext';
@@ -67,8 +67,7 @@ export function UserPosts() {
             paddingRight: 10,
           }}
           onPress={() => goBack()}>
-          <Feather
-            name="chevron-left"
+          <CaretLeft
             size={32}
             color={theme === 'dark' ? colors.text : colors.background}
           />
@@ -85,7 +84,7 @@ export function UserPosts() {
           {user?.name == name ? 'Your posts' : name}
         </Text>
         <Pressable>
-          <Feather name="chevron-left" size={32} color={colors.background} />
+          <CaretLeft size={32} color={colors.background} />
         </Pressable>
       </View>
       <PostsList

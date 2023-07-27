@@ -11,12 +11,12 @@ type MessageCardProps = {
   content: string;
 };
 export function MessageCard({author, content, timeStamp}: MessageCardProps) {
-  const {colors, fonts, theme} = useThemeContext();
+  const {colors, fonts} = useThemeContext();
 
   const {user} = useAuthContext();
 
   if (!user?.uid) {
-    return;
+    return null;
   }
 
   return (

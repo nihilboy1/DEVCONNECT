@@ -1,10 +1,10 @@
 import {FirebaseFirestoreTypes} from '@react-native-firebase/firestore';
 import {useFocusEffect, useNavigation} from '@react-navigation/native';
+import {MagnifyingGlass, Pencil} from 'phosphor-react-native';
 import {useCallback, useState} from 'react';
 import {Image, Text, TouchableOpacity, View} from 'react-native';
 import * as Animatable from 'react-native-animatable';
 import Toast from 'react-native-toast-message';
-import Feather from 'react-native-vector-icons/Feather';
 import postsLogoDark from '../../assets/postsLogoDark.png';
 import postsLogoLight from '../../assets/postsLogoLight.png';
 
@@ -60,7 +60,7 @@ export function Posts() {
           Toast.show({
             type: 'info',
             text1: 'There is no more posts',
-            position: 'bottom',
+            position: 'top',
           });
           return;
         }
@@ -132,8 +132,10 @@ export function Posts() {
     useCallback(() => {
       let componentIsMounted = true;
 
-      getOlderPostsFromAllUser();
-      setRandomPlaceholder();
+      if (componentIsMounted) {
+        getOlderPostsFromAllUser();
+        setRandomPlaceholder();
+      }
 
       return () => {
         componentIsMounted = false;
@@ -174,7 +176,7 @@ export function Posts() {
             }}>
             Search
           </Text>
-          <Feather name="search" color={colors.text} size={22} />
+          <MagnifyingGlass color={colors.text} size={22} />
         </TouchableOpacity>
       </Animatable.View>
       <PostsList
@@ -192,7 +194,10 @@ export function Posts() {
         setPostContent={setPostContent}
         addPost={addPost}
       />
-      <OpenModalWidget iconName="pencil" setModalVisible={setModalVisible} />
+      <OpenModalWidget
+        Icon={<Pencil color={colors.background} size={25} />}
+        setModalVisible={setModalVisible}
+      />
     </View>
   );
 }
